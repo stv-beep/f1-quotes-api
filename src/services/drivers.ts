@@ -1,4 +1,4 @@
-const drivers = [    
+export const drivers = [    
     {
         name: 'Max Verstappen',
         address: 'https://www.brainyquote.com/authors/max-verstappen-quotes',
@@ -211,4 +211,4 @@ const drivers = [
     }
 ]
 
-export default drivers;
+export const top10 = 'https://www.brainyquote.com/lists/topics/top-10-f1-quotes'

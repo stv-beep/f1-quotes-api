@@ -1,7 +1,7 @@
 import express from 'express'
 import axios from 'axios'
-import cheerio, { load } from 'cheerio'
-import drivers from '../services/drivers'
+import { load } from 'cheerio'
+import { drivers, top10 } from '../services/drivers'
 import { driverName } from '../types'
 
 const router = express.Router()
@@ -11,22 +11,24 @@ const quotes = [] as any
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
 const driverQuotesErrorMsg: string = ' is not in the database or the input is incorrect.'
 
-/* all quotes */
-drivers.forEach(driver => {
-    axios.get(driver.address)
-        .then(response => {
-            const html = response.data
-            const $ = load(html)
+const quoteClass: string = '.b-qt'
+const quoteContent: string = '.quoteContent'
 
-            $('.b-qt', html).each(function () {
-                const quote = $(this).text().replace(/\n/g, '')
-                quotes.push({
-                    quote,
-                    author: driver.name
-                })
+
+/* all quotes */
+axios.get(top10)
+    .then(response => {
+        const html = response.data
+        const $ = load(html)
+
+        $(quoteContent).each(function () {
+            const quote = $(this).text().replace(/\n/g, '').replace(/\./g, '. Author: ').replace('Jr. Author: ', 'Jr.')
+            quotes.push({
+                quote
             })
-        }).catch(err => console.log(err))
-})
+        })
+        
+    }).catch(err => console.log(err))
 router.get('/', (req, res) => { //quotes
     res.status(200) ? res.send(quotes) : res.json(quotesErrorMessage) 
 })
@@ -51,7 +53,7 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                 const $ = load(html)
                 const specificQuotes = [] as any
 
-                $('.b-qt', html).each(function () {
+                $(quoteClass, html).each(function () {
                     const quote = $(this).text().replace(/\n/g, '')
                     specificQuotes.push({
                         quote,
