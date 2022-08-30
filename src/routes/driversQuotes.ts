@@ -1,6 +1,6 @@
 import express from 'express'
 import axios from 'axios'
-import cheerio from 'cheerio'
+import cheerio, { load } from 'cheerio'
 import drivers from '../services/drivers'
 import { driverName } from '../types'
 
@@ -11,12 +11,12 @@ const quotes = [] as any
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
 const driverQuotesErrorMsg: string = ' is not in the database or the input is incorrect.'
 
-
+/* all quotes */
 drivers.forEach(driver => {
     axios.get(driver.address)
         .then(response => {
             const html = response.data
-            const $ = cheerio.load(html)
+            const $ = load(html)
 
             $('.b-qt', html).each(function () {
                 const quote = $(this).text().replace(/\n/g, '')
@@ -27,9 +27,6 @@ drivers.forEach(driver => {
             })
         }).catch(err => console.log(err))
 })
-
-
-/* all quotes */
 router.get('/', (req, res) => { //quotes
     res.status(200) ? res.send(quotes) : res.json(quotesErrorMessage) 
 })
@@ -51,7 +48,7 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
         axios.get(driverURL)
             .then(response => {
                 const html = response.data
-                const $ = cheerio.load(html)
+                const $ = load(html)
                 const specificQuotes = [] as any
 
                 $('.b-qt', html).each(function () {

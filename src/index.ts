@@ -8,13 +8,11 @@ const app = express()
 app.use(express.json())
 
 app.get('/', (_req, res) => {
-    res.json(driverName)
+    res.status(200).json(driverName)
 })
-
-
 
 app.use('/quotes', quotesRouter)
 
 app.use('/quotes/:driverId', quotesRouter)
 
-app.listen(PORT, () => console.log(`running on http://localhost:${PORT}` + ' on ' + new Date().toLocaleDateString()))
+app.listen(PORT, () => console.log(`running on http://localhost:${PORT}` + ' on ' + new Date().toLocaleTimeString() , new Date().toLocaleDateString()))

@@ -1,4 +1,4 @@
-const drivers = [
+const drivers = [    
     {
         name: 'Max Verstappen',
         address: 'https://www.brainyquote.com/authors/max-verstappen-quotes',
@@ -129,7 +129,6 @@ const drivers = [
         address: 'https://www.brainyquote.com/authors/ayrton-senna-quotes',
         driverId: 'senna'
     },
-    /* 
     {
         name: 'Marcus Ericsson',
         address: 'https://www.brainyquote.com/authors/marcus-ericsson-quotes',
@@ -179,8 +178,8 @@ const drivers = [
         name: 'Niki Lauda',
         address: 'https://www.brainyquote.com/authors/niki-lauda-quotes',
         driverId: 'lauda'
-    }, */
-    /* {
+    },
+    {
         name: 'Toto Wolff',
         address: 'https://www.brainyquote.com/authors/toto-wolff-quotes',
         driverId: 'wolff'
@@ -209,7 +208,7 @@ const drivers = [
         name: 'Susie Wolff',
         address: 'https://www.brainyquote.com/authors/susie-wolff-quotes_2',
         driverId: 'wolff'
-    } */
+    }
 ]
 
 export default drivers;
