@@ -1,10 +1,5 @@
 const drivers = [
     {
-        name: 'General quotes',
-        address: 'https://www.brainyquote.com/topics/f1-quotes',
-        driverId: 'general'
-    },
-    {
         name: 'Max Verstappen',
         address: 'https://www.brainyquote.com/authors/max-verstappen-quotes',
         driverId: 'verstappen'
@@ -30,9 +25,9 @@ const drivers = [
         driverId: 'alonso'
     },
     {
-        name: 'Kimi Raikkonen',
-        address: 'https://www.brainyquote.com/authors/kimi-raikkonen-quotes',
-        driverId: 'raikkonen'
+        name: 'Carlos Sainz Jr',
+        address: 'https://www.brainyquote.com/authors/carlos-sainz-jr-quotes',
+        driverId: 'sainz'
     },
     {
         name: 'Daniel Ricciardo',
@@ -60,14 +55,29 @@ const drivers = [
         driverId: 'vettel'
     },
     {
-        name: 'Ayrton Senna',
-        address: 'https://www.brainyquote.com/authors/ayrton-senna-quotes',
-        driverId: 'senna'
+        name: 'Mick Schumacher',
+        address: 'https://www.brainyquote.com/authors/mick-schumacher-quotes',
+        driverId: 'mick'
     },
     {
-        name: 'Michael Schumacher',
-        address: 'https://www.brainyquote.com/authors/michael-schumacher-quotes',
-        driverId: 'schumacher'
+        name: 'Sergio Perez',
+        address: 'https://www.brainyquote.com/authors/sergio-perez-quotes',
+        driverId: 'perez'
+    },
+    {
+        name: 'Kevin Magnussen',
+        address: 'https://www.brainyquote.com/authors/kevin-magnussen-quotes',
+        driverId: 'magnussen'
+    },
+    {
+        name: 'Lance Stroll',
+        address: 'https://www.brainyquote.com/authors/lance-stroll-quotes',
+        driverId: 'stroll'
+    },
+    {
+        name: 'Lance Stroll',
+        address: 'https://www.brainyquote.com/authors/lance-stroll-quotes_2',
+        driverId: 'stroll'
     },
     {
         name: 'Valtteri Bottas',
@@ -85,25 +95,121 @@ const drivers = [
         driverId: 'norris'
     },
     {
-        name: 'Mick Schumacher',
-        address: 'https://www.brainyquote.com/authors/mick-schumacher-quotes',
-        driverId: 'mick'
+        name: 'Nico Hulkenberg',
+        address: 'https://www.brainyquote.com/authors/nico-hulkenberg-quotes',
+        driverId: 'hulkenberg'
     },
     {
-        name: 'Sergio Perez',
-        address: 'https://www.brainyquote.com/authors/sergio-perez-quotes',
-        driverId: 'perez'
+        name: 'Nico Hulkenberg',
+        address: 'https://www.brainyquote.com/authors/nico-hulkenberg-quotes_2',
+        driverId: 'hulkenberg'
     },
     {
-        name: 'Kevin Magnussen',
-        address: 'https://www.brainyquote.com/authors/kevin-magnussen-quotes',
-        driverId: 'magnussen'
+        name: 'Robert Kubica',
+        address: 'https://www.brainyquote.com/authors/robert-kubica-quotes',
+        driverId: 'kubica'
     },
     {
-        name: 'Carlos Sainz Jr',
-        address: 'https://www.brainyquote.com/authors/carlos-sainz-jr-quotes',
-        driverId: 'sainz'
-    }
+        name: 'Robert Kubica',
+        address: 'https://www.brainyquote.com/authors/robert-kubica-quotes_2',
+        driverId: 'kubica'
+    },
+    {
+        name: 'Kimi Raikkonen',
+        address: 'https://www.brainyquote.com/authors/kimi-raikkonen-quotes',
+        driverId: 'raikkonen'
+    },
+    {
+        name: 'Michael Schumacher',
+        address: 'https://www.brainyquote.com/authors/michael-schumacher-quotes',
+        driverId: 'schumacher'
+    },
+    {
+        name: 'Ayrton Senna',
+        address: 'https://www.brainyquote.com/authors/ayrton-senna-quotes',
+        driverId: 'senna'
+    },
+    /* 
+    {
+        name: 'Marcus Ericsson',
+        address: 'https://www.brainyquote.com/authors/marcus-ericsson-quotes',
+        driverId: 'ericsson'
+    },
+    {
+        name: 'Rubens Barrichello',
+        address: 'https://www.brainyquote.com/authors/rubens-barrichello-quotes',
+        driverId: 'barrichello'
+    },
+    {
+        name: 'Felipe Massa',
+        address: 'https://www.brainyquote.com/authors/felipe-massa-quotes',
+        driverId: 'massa'
+    },
+    {
+        name: 'Felipe Massa',
+        address: 'https://www.brainyquote.com/authors/felipe-massa-quotes_2',
+        driverId: 'massa'
+    },
+    {
+        name: 'Jenson Button',
+        address: 'https://www.brainyquote.com/authors/jenson-button-quotes',
+        driverId: 'button'
+    },
+    {
+        name: 'Alain Prost',
+        address: 'https://www.brainyquote.com/authors/alain-prost-quotes',
+        driverId: 'prost'
+    },
+    {
+        name: 'Heikki Kovalainen',
+        address: 'https://www.brainyquote.com/authors/heikki-kovalainen-quotes',
+        driverId: 'kovalainen'
+    },
+    {
+        name: 'Nico Rosberg',
+        address: 'https://www.brainyquote.com/authors/nico-rosberg-quotes',
+        driverId: 'rosberg'
+    },
+    {
+        name: 'Pastor Maldonado',
+        address: 'https://www.brainyquote.com/authors/pastor-maldonado-quotes',
+        driverId: 'maldonado'
+    },
+    {
+        name: 'Niki Lauda',
+        address: 'https://www.brainyquote.com/authors/niki-lauda-quotes',
+        driverId: 'lauda'
+    }, */
+    /* {
+        name: 'Toto Wolff',
+        address: 'https://www.brainyquote.com/authors/toto-wolff-quotes',
+        driverId: 'wolff'
+    },
+    {
+        name: 'Mattia Binotto',
+        address: 'https://www.brainyquote.com/authors/mattia-binotto-quotes',
+        driverId: 'binotto'
+    },
+    {
+        name: 'Christian Horner',
+        address: 'https://www.brainyquote.com/authors/christian-horner-quotes',
+        driverId: 'horner'
+    },
+    {
+        name: 'Christian Horner',
+        address: 'https://www.brainyquote.com/authors/christian-horner-quotes_2',
+        driverId: 'horner'
+    },
+    {
+        name: 'Susie Wolff',
+        address: 'https://www.brainyquote.com/authors/susie-wolff-quotes',
+        driverId: 'wolff'
+    },
+    {
+        name: 'Susie Wolff',
+        address: 'https://www.brainyquote.com/authors/susie-wolff-quotes_2',
+        driverId: 'wolff'
+    } */
 ]
 
 export default drivers;

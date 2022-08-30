@@ -25,13 +25,13 @@ drivers.forEach(driver => {
                     author: driver.name
                 })
             })
-        })
+        }).catch(err => console.log(err))
 })
 
 
 /* all quotes */
 router.get('/', (req, res) => { //quotes
-    res.status(404) ? res.send(quotes) : res.json(quotesErrorMessage) 
+    res.status(200) ? res.send(quotes) : res.json(quotesErrorMessage) 
 })
 
 
