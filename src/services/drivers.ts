@@ -180,6 +180,36 @@ export const drivers = [
         driverId: 'lauda'
     },
     {
+        name: 'Emerson Fittipaldi',
+        address: 'https://www.brainyquote.com/authors/emerson-fittipaldi-quotes',
+        driverId: 'fittipaldi'
+    },
+    {
+        name: 'Jacky Ickx',
+        address: 'https://www.brainyquote.com/authors/jacky-ickx-quotes',
+        driverId: 'ickx'
+    },
+    {
+        name: 'Juan Pablo Montoya',
+        address: 'https://www.brainyquote.com/authors/juan-pablo-montoya-quotes',
+        driverId: 'montoya'
+    },
+    {
+        name: 'Mark Webber',
+        address: 'https://www.brainyquote.com/authors/mark-webber-quotes',
+        driverId: 'webber'
+    },
+    {
+        name: 'Ralf Schumacher',
+        address: 'https://www.brainyquote.com/authors/ralf-schumacher-quotes',
+        driverId: 'ralfschumacher'
+    },
+    {
+        name: 'Romain Grosjean',
+        address: 'https://www.brainyquote.com/authors/romain-grosjean-quotes',
+        driverId: 'grosjean'
+    },
+    {
         name: 'Toto Wolff',
         address: 'https://www.brainyquote.com/authors/toto-wolff-quotes',
         driverId: 'wolff'
