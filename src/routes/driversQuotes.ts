@@ -8,6 +8,7 @@ const router = express.Router()
 
 
 const quotes = [] as any
+const specificQuotes = [] as any
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
 const driverQuotesErrorMsg: string = ' is not in the database or the input is incorrect.'
 
@@ -59,11 +60,9 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
             .then(response => {
                 const html = response.data
                 const $ = load(html)
-                const specificQuotes = [] as any
                 /* getting the quote div including the author, then slicing the quote and the author */
                 $(specificQuoteContent, html).each(function () {
                     let rawQuote = $(this).text().replace(/\n/g, '')
-                    
                     let lastDotIndex = 0
                     if (rawQuote.includes('?')) {
                         lastDotIndex = $(this).text().lastIndexOf('?')
@@ -74,8 +73,8 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                     }
                     let quote = rawQuote.slice(0, lastDotIndex-2)
                     const author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
-
-                    quote.includes('.'+author.slice(0,3)) ? rawQuote.slice(0, lastDotIndex-3) :                     
+                    /* if there's the author name on the quote or there's some quote on the author's name, just don't return that quote */
+                    quote.includes('.'+author.slice(0,3)) || author.includes('.') ? rawQuote.slice(0, lastDotIndex-3) :                     
                     specificQuotes.push({
                         quote,
                         author: author
