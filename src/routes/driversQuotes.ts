@@ -13,6 +13,7 @@ const driverQuotesErrorMsg: string = ' is not in the database or the input is in
 
 const quoteClass: string = '.b-qt'
 const quoteContent: string = '.quoteContent'
+const specificQuoteContent: string = '.qb'
 
 
 /* all quotes */
@@ -20,11 +21,18 @@ axios.get(top10)
     .then(response => {
         const html = response.data
         const $ = load(html)
-
+        /* getting the quote div including the author, then slicing the quote and the author */
         $(quoteContent).each(function () {
-            const quote = $(this).text().replace(/\n/g, '').replace(/\./g, '. Author: ').replace('Jr. Author: ', 'Jr.')
+            const lastDotIndex = $(this).text().lastIndexOf('.')
+            let quote = $(this).text().replace(/\n/g, '').slice(0, lastDotIndex-1)
+            let author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
+            if (quote.includes('Carlos Sainz Jr')) {
+                quote = quote.replace('Carlos Sainz Jr.', '')
+                author = 'Carlos Sainz Jr.'
+            }
             quotes.push({
-                quote
+                quote,
+                author: author
             })
         })
         
@@ -52,12 +60,25 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                 const html = response.data
                 const $ = load(html)
                 const specificQuotes = [] as any
+                /* getting the quote div including the author, then slicing the quote and the author */
+                $(specificQuoteContent, html).each(function () {
+                    let rawQuote = $(this).text().replace(/\n/g, '')
+                    
+                    let lastDotIndex = 0
+                    if (rawQuote.includes('?')) {
+                        lastDotIndex = $(this).text().lastIndexOf('?')
+                    } else if (rawQuote.includes('!')) {
+                        lastDotIndex = $(this).text().lastIndexOf('!')
+                    } else {
+                        lastDotIndex = $(this).text().lastIndexOf('.')
+                    }
+                    let quote = rawQuote.slice(0, lastDotIndex-2)
+                    const author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
 
-                $(quoteClass, html).each(function () {
-                    const quote = $(this).text().replace(/\n/g, '')
+                    quote.includes('.'+author.slice(0,3)) ? rawQuote.slice(0, lastDotIndex-3) :                     
                     specificQuotes.push({
                         quote,
-                        author: driverId
+                        author: author
                     })
                 })
                 res.json(specificQuotes)
