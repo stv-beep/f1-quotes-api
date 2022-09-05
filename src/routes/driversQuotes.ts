@@ -75,16 +75,18 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                     }
                     let quote = rawQuote.slice(0, lastDotIndex-2)
                     const author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
-                    const specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
-                    quote.slice(-1) === '.' ||  quote.slice(-1) === '!' ||  quote.slice(-1) === '?' ? 
-                    specificQuotes.push({
-                        quote,
-                        author: author
-                    }) : 
-                    specificQuotes.push({
-                        quote: specialQuote,
-                        author: author
-                    })
+                    if (!author.includes('.')) {
+                        const specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
+                        quote.slice(-1) === '.' ||  quote.slice(-1) === '!' ||  quote.slice(-1) === '?' ? 
+                        specificQuotes.push({
+                            quote,
+                            author: author
+                        }) : 
+                        specificQuotes.push({
+                            quote: specialQuote,
+                            author: author
+                        })
+                    }                    
                 })
                 res.json(specificQuotes)
             }).catch(err => console.log(err))

@@ -1,4 +1,4 @@
-# F1 quotes api 0.3.2
+# F1 quotes api 0.4.4
 
 ##### An API showing several quotes said by famous Formula 1 drivers and Formula 1 personalities.
 
