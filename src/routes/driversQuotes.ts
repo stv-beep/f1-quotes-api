@@ -10,7 +10,7 @@ const router = express.Router()
 const quotes = [] as any
 const specificQuotes = [] as any
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
-const driverQuotesErrorMsg: string = ' is not in the database or the input is incorrect.'
+const driverQuotesErrorMsg: string = '` is not in the database or the input is incorrect.'
 
 const quoteClass: string = '.b-qt'
 const quoteContent: string = '.quoteContent'
@@ -25,18 +25,19 @@ axios.get(top10)
         /* getting the quote div including the author, then slicing the quote and the author */
         $(quoteContent).each(function () {
             const lastDotIndex = $(this).text().lastIndexOf('.')
-            let quote = $(this).text().replace(/\n/g, '').slice(0, lastDotIndex-1)
-            let author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
-            if (quote.includes('Carlos Sainz Jr')) {
-                quote = quote.replace('Carlos Sainz Jr.', '')
-                author = 'Carlos Sainz Jr.'
-            }
+            const quote = $(this).text().replace(/\n/g, '').slice(0, lastDotIndex-1)
+            const author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
+            const specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
+            quote.slice(-1) === '.' ||  quote.slice(-1) === '!' ||  quote.slice(-1) === '?' ? 
             quotes.push({
                 quote,
                 author: author
+            }) : 
+            quotes.push({
+                quote: specialQuote,
+                author: author
             })
         })
-        
     }).catch(err => console.log(err))
 router.get('/', (req, res) => { //quotes
     res.status(200) ? res.send(quotes) : res.json(quotesErrorMessage) 
@@ -83,7 +84,7 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                 res.json(specificQuotes)
             }).catch(err => console.log(err))
     } else {
-        res.json(driverId + driverQuotesErrorMsg)
+        res.json('`'+driverId + driverQuotesErrorMsg)
     }
 })
 
