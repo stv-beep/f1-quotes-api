@@ -7,12 +7,11 @@ import { driverName } from '../types'
 const router = express.Router()
 
 
-const quotes = [] as any
-const specificQuotes = [] as any
+let quotes = [] as any
+let specificQuotes = [] as any
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
 const driverQuotesErrorMsg: string = '` is not in the database or the input is incorrect.'
 
-const quoteClass: string = '.b-qt'
 const quoteContent: string = '.quoteContent'
 const specificQuoteContent: string = '.qb'
 
@@ -22,6 +21,7 @@ axios.get(top10)
     .then(response => {
         const html = response.data
         const $ = load(html)
+        quotes = [] //reloading array
         /* getting the quote div including the author, then slicing the quote and the author */
         $(quoteContent).each(function () {
             const lastDotIndex = $(this).text().lastIndexOf('.')
@@ -61,6 +61,7 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
             .then(response => {
                 const html = response.data
                 const $ = load(html)
+                specificQuotes = [] //reloading array
                 /* getting the quote div including the author, then slicing the quote and the author */
                 $(specificQuoteContent, html).each(function () {
                     let rawQuote = $(this).text().replace(/\n/g, '')
@@ -74,10 +75,14 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                     }
                     let quote = rawQuote.slice(0, lastDotIndex-2)
                     const author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
-                    /* if there's the author name on the quote or there's some quote on the author's name, just don't return that quote */
-                    quote.includes('.'+author.slice(0,3)) || author.includes('.') ? rawQuote.slice(0, lastDotIndex-3) :                     
+                    const specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
+                    quote.slice(-1) === '.' ||  quote.slice(-1) === '!' ||  quote.slice(-1) === '?' ? 
                     specificQuotes.push({
                         quote,
+                        author: author
+                    }) : 
+                    specificQuotes.push({
+                        quote: specialQuote,
                         author: author
                     })
                 })

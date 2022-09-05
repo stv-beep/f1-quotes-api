@@ -232,12 +232,12 @@ export const drivers = [
     {
         name: 'Susie Wolff',
         address: 'https://www.brainyquote.com/authors/susie-wolff-quotes',
-        driverId: 'wolff'
+        driverId: 'susie'
     },
     {
         name: 'Susie Wolff',
         address: 'https://www.brainyquote.com/authors/susie-wolff-quotes_2',
-        driverId: 'wolff'
+        driverId: 'susie'
     }
 ]
 
