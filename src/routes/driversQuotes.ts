@@ -78,30 +78,38 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                 const $ = load(html)
                 specificQuotes = [] //cleaning array
                 /* getting the quote div including the author, then slicing the quote and the author */
-                $(specificQuoteContent, html).each(function () {
-                    let rawQuote = $(this).text().replace(/\n/g, '')
+                $(specificQuoteContent).each(function () {
                     let lastDotIndex = 0
+                    let rawQuote = $(this).text().replace(/\n/g, '')
+                    let author = ''
+                    let quote = ''
                     if (rawQuote.includes('?')) {
-                        lastDotIndex = $(this).text().lastIndexOf('?')
+                        lastDotIndex = rawQuote.lastIndexOf('?')
                     } else if (rawQuote.includes('!')) {
-                        lastDotIndex = $(this).text().lastIndexOf('!')
+                        lastDotIndex = rawQuote.lastIndexOf('!')
                     } else {
-                        lastDotIndex = $(this).text().lastIndexOf('.')
+                        lastDotIndex = rawQuote.lastIndexOf('.')
+                        if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
+                            rawQuote = rawQuote.replace('Jr.', 'Jr')
+                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+
+                            specificQuotes.push({
+                                quote: quote,
+                                author: author
+                            })
+                        } else {
+                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+
+                            specificQuotes.push({
+                                quote: quote,
+                                author: author
+                            })
+                        }
                     }
-                    let quote = rawQuote.slice(0, lastDotIndex-2)
-                    const author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
-                    if (!author.includes('.')) {
-                        const specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
-                        quote.slice(-1) === '.' ||  quote.slice(-1) === '!' ||  quote.slice(-1) === '?' ? 
-                        specificQuotes.push({
-                            quote,
-                            author: author
-                        }) : 
-                        specificQuotes.push({
-                            quote: specialQuote,
-                            author: author
-                        })
-                    }                    
                 })
                 res.json(specificQuotes)
             }).catch(err => console.log(err))
