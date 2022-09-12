@@ -1,4 +1,10 @@
-# F1 quotes api 0.4.4
+# F1 quotes api
+
+<img alt="Version" src="https://img.shields.io/badge/version-0.4.5-green.svg" />
+
+<img src="https://img.shields.io/badge/npm-%3E%3D8.5.0-blue.svg" />
+
+<img src="https://img.shields.io/badge/node-%3E%3D16.14.2-blue.svg" />
 
 ##### An API showing several quotes said by famous Formula 1 drivers and Formula 1 personalities.
 
@@ -11,7 +17,7 @@
   
   
 
-## Developer:
+## Dev:
 
 ```npm install```
 

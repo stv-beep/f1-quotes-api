@@ -21,26 +21,41 @@ axios.get(top10)
     .then(response => {
         const html = response.data
         const $ = load(html)
-        quotes = [] //reloading array
+        quotes = [] //cleaning array
         /* getting the quote div including the author, then slicing the quote and the author */
         $(quoteContent).each(function () {
             const lastDotIndex = $(this).text().lastIndexOf('.')
-            const quote = $(this).text().replace(/\n/g, '').slice(0, lastDotIndex-1)
-            const author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
-            const specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
-            quote.slice(-1) === '.' ||  quote.slice(-1) === '!' ||  quote.slice(-1) === '?' ? 
-            quotes.push({
-                quote,
-                author: author
-            }) : 
-            quotes.push({
-                quote: specialQuote,
-                author: author
-            })
+
+            if ($(this).text().slice(lastDotIndex-2, lastDotIndex) === 'Jr') {//if there's a '.' in author's name
+                const rawQuote = $(this).text().replace('Jr.', 'Jr')
+                const lastDotIndex = rawQuote.lastIndexOf('.')
+                const quote = rawQuote.replace(/\n/g, '').slice(0, lastDotIndex-1)
+                const author = rawQuote.slice(lastDotIndex+1).replace(/\n/g, '')
+                const specialQuote = quote.slice(1, quote.lastIndexOf('.')+1) //quote with an image
+                quotes.push({
+                    quote: specialQuote,
+                    author: author
+                })
+            } else {
+                const quote = $(this).text().replace(/\n/g, '').slice(0, lastDotIndex-1)
+                const author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
+                const specialQuote = quote.slice(1, quote.lastIndexOf('.')+1) //quote with an image
+                quote.slice(-1) === '.' ||  quote.slice(-1) === '!' ||  quote.slice(-1) === '?' ? 
+                quotes.push({
+                    quote,
+                    author: author
+                }) : 
+                quotes.push({
+                    quote: specialQuote,
+                    author: author
+                })
+            } 
         })
     }).catch(err => console.log(err))
 router.get('/', (req, res) => { //quotes
-    res.status(200) ? res.send(quotes) : res.json(quotesErrorMessage) 
+    return (quotes != null || res.status(200))
+    ? res.send(quotes)
+    : res.json(quotesErrorMessage) 
 })
 
 
@@ -61,7 +76,7 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
             .then(response => {
                 const html = response.data
                 const $ = load(html)
-                specificQuotes = [] //reloading array
+                specificQuotes = [] //cleaning array
                 /* getting the quote div including the author, then slicing the quote and the author */
                 $(specificQuoteContent, html).each(function () {
                     let rawQuote = $(this).text().replace(/\n/g, '')
