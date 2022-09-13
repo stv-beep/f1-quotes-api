@@ -15,6 +15,8 @@ const driverQuotesErrorMsg: string = '` is not in the database or the input is i
 const quoteContent: string = '.quoteContent'
 const specificQuoteContent: string = '.qb'
 
+const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
+
 
 /* all quotes */
 axios.get(top10)
@@ -100,47 +102,33 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                             quote = rawQuote.slice(0, lastExclIndex+1)
                             author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
 
-                            specificQuotes.push({
-                                id: index,
-                                quote: quote,
-                                author: author
-                            })
-
                         } else if (rawQuote.includes('?')) {
                             quote = rawQuote.slice(0, lastInterrIndex+1)
                             author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
-
-                            specificQuotes.push({
-                                id: index,
-                                quote: quote,
-                                author: author
-                            })
                         }
+                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
 
                     } else {
+                        
                         if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
                             rawQuote = rawQuote.replace('Jr.', 'Jr')
                             author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
                             rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
                             quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-
-                            specificQuotes.push({
-                                id: index,
-                                quote: quote,
-                                author: author
-                            })
+           
                         } else {
                             author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
                             rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
                             quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-
-                            specificQuotes.push({
-                                id: index,
-                                quote: quote,
-                                author: author
-                            })
                         }
+                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
+                        
                     }
+                    specificQuotes.push({
+                        id: index,
+                        quote: quote,
+                        author: author
+                    })
                 })
                 res.json(specificQuotes)
             }).catch(err => console.log(err))
