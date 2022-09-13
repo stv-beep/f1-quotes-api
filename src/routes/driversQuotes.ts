@@ -90,13 +90,15 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                     let author = ''
                     let quote = ''
 
-                    let lastDotIndex = rawQuote.lastIndexOf('.')
-
-                    if (lastDotIndex === -1) {//if there's no '.' so probably last character is '!' or '?'
+                    const lastDotIndex = rawQuote.lastIndexOf('.')
+                    const lastExclIndex = rawQuote.lastIndexOf('!')
+                    const lastInterrIndex = rawQuote.lastIndexOf('?')
+                    //if there's no '.' so probably last character is '!' or '?'
+                    if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
 
                         if (rawQuote.includes('!')) {
-                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('!')+1)
-                            author = rawQuote.slice(rawQuote.lastIndexOf('!')+1, rawQuote.length)
+                            quote = rawQuote.slice(0, lastExclIndex+1)
+                            author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
 
                             specificQuotes.push({
                                 id: index,
@@ -105,8 +107,8 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                             })
 
                         } else if (rawQuote.includes('?')) {
-                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('?')+1)
-                            author = rawQuote.slice(rawQuote.lastIndexOf('?')+1, rawQuote.length)
+                            quote = rawQuote.slice(0, lastInterrIndex+1)
+                            author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
 
                             specificQuotes.push({
                                 id: index,
