@@ -22,8 +22,10 @@ axios.get(top10)
         const html = response.data
         const $ = load(html)
         quotes = [] //cleaning array
+        let index = 0
         /* getting the quote div including the author, then slicing the quote and the author */
         $(quoteContent).each(function () {
+            index++
             const lastDotIndex = $(this).text().lastIndexOf('.')
 
             if ($(this).text().slice(lastDotIndex-2, lastDotIndex) === 'Jr') {//if there's a '.' in author's name
@@ -33,6 +35,7 @@ axios.get(top10)
                 const author = rawQuote.slice(lastDotIndex+1).replace(/\n/g, '')
                 const specialQuote = quote.slice(1, quote.lastIndexOf('.')+1) //quote with an image
                 quotes.push({
+                    id: index,
                     quote: specialQuote,
                     author: author
                 })
@@ -42,10 +45,12 @@ axios.get(top10)
                 const specialQuote = quote.slice(1, quote.lastIndexOf('.')+1) //quote with an image
                 quote.slice(-1) === '.' ||  quote.slice(-1) === '!' ||  quote.slice(-1) === '?' ? 
                 quotes.push({
+                    id: index,
                     quote,
                     author: author
                 }) : 
                 quotes.push({
+                    id: index,
                     quote: specialQuote,
                     author: author
                 })
@@ -77,18 +82,40 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                 const html = response.data
                 const $ = load(html)
                 specificQuotes = [] //cleaning array
+                let index = 0
                 /* getting the quote div including the author, then slicing the quote and the author */
                 $(specificQuoteContent).each(function () {
-                    let lastDotIndex = 0
+                    index++
                     let rawQuote = $(this).text().replace(/\n/g, '')
                     let author = ''
                     let quote = ''
-                    if (rawQuote.includes('?')) {
-                        lastDotIndex = rawQuote.lastIndexOf('?')
-                    } else if (rawQuote.includes('!')) {
-                        lastDotIndex = rawQuote.lastIndexOf('!')
+
+                    let lastDotIndex = rawQuote.lastIndexOf('.')
+
+                    if (lastDotIndex === -1) {//if there's no '.' so probably last character is '!' or '?'
+
+                        if (rawQuote.includes('!')) {
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('!')+1)
+                            author = rawQuote.slice(rawQuote.lastIndexOf('!')+1, rawQuote.length)
+
+                            specificQuotes.push({
+                                id: index,
+                                quote: quote,
+                                author: author
+                            })
+
+                        } else if (rawQuote.includes('?')) {
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('?')+1)
+                            author = rawQuote.slice(rawQuote.lastIndexOf('?')+1, rawQuote.length)
+
+                            specificQuotes.push({
+                                id: index,
+                                quote: quote,
+                                author: author
+                            })
+                        }
+
                     } else {
-                        lastDotIndex = rawQuote.lastIndexOf('.')
                         if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
                             rawQuote = rawQuote.replace('Jr.', 'Jr')
                             author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
@@ -96,6 +123,7 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                             quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
 
                             specificQuotes.push({
+                                id: index,
                                 quote: quote,
                                 author: author
                             })
@@ -105,6 +133,7 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                             quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
 
                             specificQuotes.push({
+                                id: index,
                                 quote: quote,
                                 author: author
                             })
