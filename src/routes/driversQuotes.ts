@@ -11,6 +11,7 @@ let quotes = [] as any
 let specificQuotes = [] as any
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
 const driverQuotesErrorMsg: string = '` is not in the database or the input is incorrect.'
+const notEnoughQuotes: string = 'This driver doesn\'t have that number of quotes in the database. Try smaller numbers.'
 
 const quoteContent: string = '.quoteContent'
 const specificQuoteContent: string = '.qb'
@@ -131,6 +132,183 @@ router.get('/:driverId', (req, res) => { //quotes/:driverId
                     })
                 })
                 res.json(specificQuotes)
+            }).catch(err => console.log(err))
+    } else {
+        res.json('`'+driverId + driverQuotesErrorMsg)
+    }
+})
+
+
+/* specific driver specific quote */
+router.get('/:driverId/:quoteId', (req, res) => { //quotes/verstappen/9
+    const driverId = req.params.driverId
+
+    const quoteId = Number(req.params.quoteId) -1
+
+    if (isDriver(driverId)) {
+        
+        const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
+
+        axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+                specificQuotes = [] //cleaning array
+                let index = 0
+                /* getting the quote div including the author, then slicing the quote and the author */
+                $(specificQuoteContent).each(function () {
+                    index++
+                    let rawQuote = $(this).text().replace(/\n/g, '')
+                    let author = ''
+                    let quote = ''
+
+                    const lastDotIndex = rawQuote.lastIndexOf('.')
+                    const lastExclIndex = rawQuote.lastIndexOf('!')
+                    const lastInterrIndex = rawQuote.lastIndexOf('?')
+                    //if there's no '.' so probably last character is '!' or '?'
+                    if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
+
+                        if (rawQuote.includes('!')) {
+                            quote = rawQuote.slice(0, lastExclIndex+1)
+                            author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
+
+                        } else if (rawQuote.includes('?')) {
+                            quote = rawQuote.slice(0, lastInterrIndex+1)
+                            author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
+                        }
+                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
+
+                    } else {
+                        
+                        if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
+                            rawQuote = rawQuote.replace('Jr.', 'Jr')
+                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+           
+                        } else {
+                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+                        }
+                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
+                        
+                    }
+                    specificQuotes.push({
+                        id: index,
+                        quote: quote,
+                        author: author
+                    })
+                })
+                
+                specificQuotes[quoteId] !== undefined ? res.json(specificQuotes[quoteId]) :
+                    res.json(notEnoughQuotes)
+                
+                
+            }).catch(err => console.log(err))
+    } else {
+        res.json('`'+driverId + driverQuotesErrorMsg)
+    }
+})
+
+
+/* specific driver pagination */
+router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
+    const driverId = req.params.driverId
+
+    const pageN = Number(req.params.page)
+
+    if (isDriver(driverId)) {
+        
+        const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
+
+        axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+                specificQuotes = [] //cleaning array
+                let index = 0
+                /* getting the quote div including the author, then slicing the quote and the author */
+                $(specificQuoteContent).each(function () {
+                    index++
+                    let rawQuote = $(this).text().replace(/\n/g, '')
+                    let author = ''
+                    let quote = ''
+
+                    const lastDotIndex = rawQuote.lastIndexOf('.')
+                    const lastExclIndex = rawQuote.lastIndexOf('!')
+                    const lastInterrIndex = rawQuote.lastIndexOf('?')
+                    //if there's no '.' so probably last character is '!' or '?'
+                    if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
+
+                        if (rawQuote.includes('!')) {
+                            quote = rawQuote.slice(0, lastExclIndex+1)
+                            author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
+
+                        } else if (rawQuote.includes('?')) {
+                            quote = rawQuote.slice(0, lastInterrIndex+1)
+                            author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
+                        }
+                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
+
+                    } else {
+                        
+                        if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
+                            rawQuote = rawQuote.replace('Jr.', 'Jr')
+                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+           
+                        } else {
+                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+                        }
+                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
+                        
+                    }
+                    specificQuotes.push({
+                        id: index,
+                        quote: quote,
+                        author: author
+                    })
+                })
+
+                /* that's called "pagination" i see */
+                const pageSize = 10
+
+                if (pageN === 1) {
+
+                    res.json(specificQuotes.slice(0,pageN*pageSize))
+
+                } else if (pageN === 2) {
+
+                    specificQuotes.slice(pageSize,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
+                    res.json(specificQuotes.slice(pageSize,pageN*pageSize))
+
+                } else if (pageN === 3) {
+
+                    specificQuotes.slice(20,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
+                    res.json(specificQuotes.slice(20,pageN*pageSize)) 
+
+                } else if (pageN === 4) {
+
+                    specificQuotes.slice(30,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
+                    res.json(specificQuotes.slice(30,pageN*pageSize))
+
+                } else if (pageN === 5) {
+
+                    specificQuotes.slice(40,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
+                    res.json(specificQuotes.slice(40,pageN*pageSize))
+
+                } else if (pageN === 6) {
+
+                    specificQuotes.slice(50,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
+                    res.json(specificQuotes.slice(50,pageN*pageSize))
+
+                } else {
+                    res.json(notEnoughQuotes)
+                }
             }).catch(err => console.log(err))
     } else {
         res.json('`'+driverId + driverQuotesErrorMsg)
