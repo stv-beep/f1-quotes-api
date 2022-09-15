@@ -3,6 +3,7 @@ import axios from 'axios'
 import { load } from 'cheerio'
 import { drivers, top10 } from '../services/drivers'
 import { driverName } from '../types'
+import { isDriver, pagination } from '../utils'
 
 const router = express.Router()
 
@@ -11,7 +12,8 @@ let quotes = [] as any
 let specificQuotes = [] as any
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
 const driverQuotesErrorMsg: string = '` is not in the database or the input is incorrect.'
-const notEnoughQuotes: string = 'This driver doesn\'t have that number of quotes in the database. Try smaller numbers.'
+const idNotFound: string = 'This driver doesn\'t have that number of quotes in the database. Try small ID.'
+export const notEnoughQuotes: string = 'This driver doesn\'t have that number of quotes in the database. Try between 1-6 pages.'
 
 const quoteContent: string = '.quoteContent'
 const specificQuoteContent: string = '.qb'
@@ -66,11 +68,6 @@ router.get('/', (req, res) => { //quotes
     : res.json(quotesErrorMessage) 
 })
 
-
-/* check if input is correct driver from list */
-const isDriver = (param: any): boolean => {
-    return Object.values(driverName).includes(param)
-}
 
 
 /* specific driver */
@@ -202,7 +199,7 @@ router.get('/:driverId/:quoteId', (req, res) => { //quotes/verstappen/9
                 })
                 
                 specificQuotes[quoteId] !== undefined ? res.json(specificQuotes[quoteId]) :
-                    res.json(notEnoughQuotes)
+                    res.json(idNotFound)
                 
                 
             }).catch(err => console.log(err))
@@ -274,41 +271,8 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                     })
                 })
 
-                /* that's called "pagination" i see */
-                const pageSize = 10
+                res.json(pagination(pageN, specificQuotes))
 
-                if (pageN === 1) {
-
-                    res.json(specificQuotes.slice(0,pageN*pageSize))
-
-                } else if (pageN === 2) {
-
-                    specificQuotes.slice(pageSize,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
-                    res.json(specificQuotes.slice(pageSize,pageN*pageSize))
-
-                } else if (pageN === 3) {
-
-                    specificQuotes.slice(20,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
-                    res.json(specificQuotes.slice(20,pageN*pageSize)) 
-
-                } else if (pageN === 4) {
-
-                    specificQuotes.slice(30,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
-                    res.json(specificQuotes.slice(30,pageN*pageSize))
-
-                } else if (pageN === 5) {
-
-                    specificQuotes.slice(40,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
-                    res.json(specificQuotes.slice(40,pageN*pageSize))
-
-                } else if (pageN === 6) {
-
-                    specificQuotes.slice(50,pageN*pageSize) == '' ? res.json(notEnoughQuotes) :
-                    res.json(specificQuotes.slice(50,pageN*pageSize))
-
-                } else {
-                    res.json(notEnoughQuotes)
-                }
             }).catch(err => console.log(err))
     } else {
         res.json('`'+driverId + driverQuotesErrorMsg)
