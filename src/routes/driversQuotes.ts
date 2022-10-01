@@ -21,7 +21,7 @@ const specificQuoteContent: string = '.qb'
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
 
 
-/* all quotes */
+/* top quotes */
 axios.get(top10)
     .then(response => {
         const html = response.data
@@ -38,7 +38,7 @@ axios.get(top10)
                 const lastDotIndex = rawQuote.lastIndexOf('.')
                 const quote = rawQuote.replace(/\n/g, '').slice(0, lastDotIndex-1)
                 const author = rawQuote.slice(lastDotIndex+1).replace(/\n/g, '')
-                const specialQuote = quote.slice(1, quote.lastIndexOf('.')+1) //quote with an image
+                const specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
                 quotes.push({
                     id: index,
                     quote: specialQuote,
