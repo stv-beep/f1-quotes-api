@@ -1,7 +1,7 @@
 <h1 align="center">F1 quotes api 🏎</h1>
 
 <p>
-<img alt="Version" src="https://img.shields.io/badge/version-0.6.2-green.svg"/>
+<img alt="Version" src="https://img.shields.io/badge/version-0.6.4-green.svg"/>
 <img src="https://img.shields.io/badge/npm-%3E%3D8.5.0-blue.svg"/>
 <img src="https://img.shields.io/badge/node-%3E%3D16.14.2-blue.svg"/>
 </p>
@@ -9,7 +9,9 @@
 
 ##### An API showing several quotes said by famous Formula 1 drivers and Formula 1 personalities.
 
-##### Very easy to use. GET ```/``` shows all the F1 drivers or personalities who have quotes saved in this API, and their code to access them. For example: Max Verstappen's quotes: ```/quotes/verstappen```
+##### Very easy to use. GET ```/``` shows all the F1 drivers or personalities who have quotes saved in this API, and their code to access them. For example: Max Verstappen's quotes: ```/quotes/verstappen```. Note that there are people with the same last name, so you will have to write the name-last name. Example: `/quotes/michael-schumacher` and `/quotes/mick-schumacher`.
+
+#### Please don't hesitate to give me feedback if something doesn't work or you want to ask something or make a suggestion.  
 
 ## Endpoints
 

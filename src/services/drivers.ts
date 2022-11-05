@@ -57,7 +57,7 @@ export const drivers = [
     {
         name: 'Mick Schumacher',
         address: 'https://www.brainyquote.com/authors/mick-schumacher-quotes',
-        driverId: 'mick'
+        driverId: 'mick-schumacher'
     },
     {
         name: 'Sergio Perez',
@@ -122,7 +122,7 @@ export const drivers = [
     {
         name: 'Michael Schumacher',
         address: 'https://www.brainyquote.com/authors/michael-schumacher-quotes',
-        driverId: 'schumacher'
+        driverId: 'michael-schumacher'
     },
     {
         name: 'Ayrton Senna',
@@ -202,7 +202,7 @@ export const drivers = [
     {
         name: 'Ralf Schumacher',
         address: 'https://www.brainyquote.com/authors/ralf-schumacher-quotes',
-        driverId: 'ralfschumacher'
+        driverId: 'ralf-schumacher'
     },
     {
         name: 'Romain Grosjean',
@@ -267,7 +267,7 @@ export const drivers = [
     {
         name: 'Jacques Villeneuve',
         address: 'https://www.brainyquote.com/authors/jacques-villeneuve-quotes',
-        driverId: 'jacquesvilleneuve'
+        driverId: 'jacques-villeneuve'
     },
     {
         name: 'John Surtees',
@@ -277,7 +277,7 @@ export const drivers = [
     {
         name: 'Gilles Villeneuve',
         address: 'https://www.brainyquote.com/authors/gilles-villeneuve-quotes',
-        driverId: 'gillesvilleneuve'
+        driverId: 'gilles-villeneuve'
     }
 ]
 
