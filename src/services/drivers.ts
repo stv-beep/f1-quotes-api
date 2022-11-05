@@ -238,6 +238,46 @@ export const drivers = [
         name: 'Susie Wolff',
         address: 'https://www.brainyquote.com/authors/susie-wolff-quotes_2',
         driverId: 'susie'
+    },
+    {
+        name: 'Jackie Stewart',
+        address: 'https://www.brainyquote.com/authors/jackie-stewart-quotes',
+        driverId: 'stewart'
+    },
+    {
+        name: 'Nelson Piquet',
+        address: 'https://www.brainyquote.com/authors/nelson-piquet-quotes',
+        driverId: 'piquet'
+    },
+    {
+        name: 'Juan Manuel Fangio',
+        address: 'https://www.brainyquote.com/authors/juan-manuel-fangio-quotes',
+        driverId: 'fangio'
+    },
+    {
+        name: 'Nigell Mansell',
+        address: 'https://www.brainyquote.com/authors/nigel-mansell-quotes',
+        driverId: 'mansell'
+    },
+    {
+        name: 'Damon Hill',
+        address: 'https://www.brainyquote.com/authors/damon-hill-quotes',
+        driverId: 'hill'
+    },
+    {
+        name: 'Jacques Villeneuve',
+        address: 'https://www.brainyquote.com/authors/jacques-villeneuve-quotes',
+        driverId: 'jacquesvilleneuve'
+    },
+    {
+        name: 'John Surtees',
+        address: 'https://www.brainyquote.com/authors/john-surtees-quotes',
+        driverId: 'surtees'
+    },
+    {
+        name: 'Gilles Villeneuve',
+        address: 'https://www.brainyquote.com/authors/gilles-villeneuve-quotes',
+        driverId: 'gillesvilleneuve'
     }
 ]
 
