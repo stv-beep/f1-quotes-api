@@ -2,7 +2,6 @@ import express from 'express'
 import axios from 'axios'
 import { load } from 'cheerio'
 import { drivers, top10 } from '../services/drivers'
-import { driverName } from '../types'
 import { isDriver, pagination } from '../utils'
 
 const router = express.Router()
@@ -12,7 +11,8 @@ let quotes = [] as any
 let specificQuotes = [] as any
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
 const driverQuotesErrorMsg: string = '` is not in the database or the input is incorrect.'
-const idNotFound: string = 'This driver doesn\'t have that number of quotes in the database. Try small ID.'
+const idNotFound: string = 'This driver doesn\'t have that number of quotes in the database. Try smaller numbers.'
+const idTooSmall: string = 'This driver doesn\'t have that number of quotes in the database. Try positive numbers.'
 export const notEnoughQuotes: string = 'This driver doesn\'t have that number of quotes in the database. Try between 1-6 pages.'
 
 const quoteContent: string = '.quoteContent'
@@ -154,7 +154,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
 
 const specificDriver = (req:any,res:any) => {
     const driverId = req.params.driverId
-    let quoteId = 0
+    let quoteId = null as any
     if (req.params.quoteId != null || req.params.quoteId != undefined) {
         quoteId = Number(req.params.quoteId) -1
     }
@@ -213,12 +213,17 @@ const specificDriver = (req:any,res:any) => {
                     })
                 })
 
-                if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                    specificQuotes[quoteId] !== undefined ? res.json(specificQuotes[quoteId]) :
-                    res.json(idNotFound)
+                if (req.params.quoteId <= 0) {
+                    res.json(idTooSmall)
                 } else {
-                    res.json(specificQuotes)
+                    if (req.params.quoteId != null || req.params.quoteId != undefined) {
+                        specificQuotes[quoteId] !== undefined ? res.json(specificQuotes[quoteId]) :
+                        res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
+                    } else {
+                        res.json(specificQuotes)
+                    }
                 }
+                
             }).catch(err => console.log(err))
     } else {
         res.json('`'+driverId + driverQuotesErrorMsg)
