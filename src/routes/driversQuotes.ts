@@ -3,6 +3,7 @@ import axios from 'axios'
 import { load } from 'cheerio'
 import { drivers, top10 } from '../services/drivers'
 import { isDriver, pagination } from '../utils'
+import { Response } from 'express-serve-static-core'
 
 const router = express.Router()
 
@@ -152,11 +153,11 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
     }
 })
 
-const specificDriver = (req:any,res:any) => {
+const specificDriver = (req:any,res: Response<any, Record<string, any>, number>) => {
     const driverId = req.params.driverId
-    let quoteId = null as any
+    let specQuoteID:number = 0
     if (req.params.quoteId != null || req.params.quoteId != undefined) {
-        quoteId = Number(req.params.quoteId) -1
+        specQuoteID = Number(req.params.quoteId) -1
     }
     if (isDriver(driverId)) {
         const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
@@ -217,7 +218,7 @@ const specificDriver = (req:any,res:any) => {
                     res.json(idTooSmall)
                 } else {
                     if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                        specificQuotes[quoteId] !== undefined ? res.json(specificQuotes[quoteId]) :
+                        specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
                         res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
                     } else {
                         res.json(specificQuotes)
