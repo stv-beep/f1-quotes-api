@@ -33,18 +33,45 @@ axios.get(top10)
         $(quoteContent).each(function () {
             index++
             const lastDotIndex = $(this).text().lastIndexOf('.')
+            const lastExclIndex = $(this).text().lastIndexOf('!')
+            const lastInterrIndex = $(this).text().lastIndexOf('?')
+            const lastApostropheIndex = $(this).text().lastIndexOf("'")
+            let rawQuote = $(this).text().replace(/\n/g, '')
+            let author = ''
+            let specialQuote = ''
 
             if ($(this).text().slice(lastDotIndex-2, lastDotIndex) === 'Jr') {//if there's a '.' in author's name
-                const rawQuote = $(this).text().replace('Jr.', 'Jr')
+                rawQuote = $(this).text().replace('Jr.', 'Jr')
                 const lastDotIndex = rawQuote.lastIndexOf('.')
                 const quote = rawQuote.replace(/\n/g, '').slice(0, lastDotIndex-1)
                 const author = rawQuote.slice(lastDotIndex+1).replace(/\n/g, '')
-                const specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
+                specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
                 quotes.push({
                     id: index,
                     quote: specialQuote,
                     author: author
                 })
+            } else if (lastDotIndex === -1 || lastDotIndex < lastApostropheIndex || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex 
+                ) {
+
+                if (rawQuote.includes('!')) {
+                    specialQuote = rawQuote.slice(0, lastExclIndex+1)
+                    author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
+
+                } else if (rawQuote.includes('?')) {
+                    specialQuote = rawQuote.slice(0, lastInterrIndex)
+                    author = rawQuote.slice(lastInterrIndex, rawQuote.length)
+                } else if (rawQuote.includes("'")) {
+                    specialQuote = rawQuote.slice(0, lastApostropheIndex)
+                    author = rawQuote.slice(lastInterrIndex, rawQuote.length)
+                }
+                alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length) 
+                quotes.push({
+                    id: index,
+                    quote: specialQuote,
+                    author: author
+                })
+
             } else {
                 const quote = $(this).text().replace(/\n/g, '').slice(0, lastDotIndex-1)
                 const author = $(this).text().slice(lastDotIndex+1).replace(/\n/g, '')
