@@ -43,6 +43,6 @@ export enum driverName {
     Gilles_Villeneuve = 'gilles-villeneuve',
     Jacques_Villeneuve = 'jacques-villeneuve',
     Mark_Webber = 'webber',
-    Susie_Wolff = 'susie',
-    Toto_Wolff = 'wolff',
+    Susie_Wolff = 'susie-wolff',
+    Toto_Wolff = 'toto-wolff',
 }

@@ -212,7 +212,7 @@ export const drivers = [
     {
         name: 'Toto Wolff',
         address: 'https://www.brainyquote.com/authors/toto-wolff-quotes',
-        driverId: 'wolff'
+        driverId: 'toto-wolff'
     },
     {
         name: 'Mattia Binotto',
@@ -232,12 +232,12 @@ export const drivers = [
     {
         name: 'Susie Wolff',
         address: 'https://www.brainyquote.com/authors/susie-wolff-quotes',
-        driverId: 'susie'
+        driverId: 'susie-wolff'
     },
     {
         name: 'Susie Wolff',
         address: 'https://www.brainyquote.com/authors/susie-wolff-quotes_2',
-        driverId: 'susie'
+        driverId: 'susie-wolff'
     },
     {
         name: 'Jackie Stewart',
@@ -282,6 +282,11 @@ export const drivers = [
     {
         name: 'Bernie Ecclestone',
         address: 'https://www.brainyquote.com/authors/bernie-ecclestone-quotes',
+        driverId: 'ecclestone'
+    },
+    {
+        name: 'Bernie Ecclestone',
+        address: 'https://www.azquotes.com/author/31745-Bernie_Ecclestone',
         driverId: 'ecclestone'
     }
 ]

@@ -1,7 +1,7 @@
 <h1 align="center">F1 quotes api 🏎</h1>
 
 <p>
-<img alt="Version" src="https://img.shields.io/badge/version-0.6.9-green.svg"/>
+<img alt="Version" src="https://img.shields.io/badge/version-0.6.10-green.svg"/>
 <img src="https://img.shields.io/badge/npm-%3E%3D8.5.0-blue.svg"/>
 <img src="https://img.shields.io/badge/node-%3E%3D16.14.2-blue.svg"/>
 </p>

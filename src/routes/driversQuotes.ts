@@ -8,8 +8,8 @@ import { Response } from 'express-serve-static-core'
 const router = express.Router()
 
 
-let quotes = [] as any
-let specificQuotes = [] as any
+let quotes: Array<{ id: number, quote: string, author: string }> = Array()
+let specificQuotes: Array<{ id: number, quote: string, author: string }> = Array()
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
 const driverQuotesErrorMsg: string = '` is not in the database or the input is incorrect.'
 const idNotFound: string = 'This driver doesn\'t have that number of quotes in the database. Try smaller numbers.'
@@ -18,6 +18,7 @@ export const notEnoughQuotes: string = 'This driver doesn\'t have that number of
 
 const quoteContent: string = '.quoteContent'
 const specificQuoteContent: string = '.qb'
+const azquotesClass: string = '.title' //provisional
 
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
 
@@ -188,19 +189,21 @@ const specificDriver = (req:any,res: Response<any, Record<string, any>, number>)
     }
     if (isDriver(driverId)) {
         const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
+        let author = ''
+        let quote = ''
+        specificQuotes = [] //cleaning array
+        let index = 0
 
-        axios.get(driverURL)
+        if (driverURL.includes('brainyquote')) {
+            axios.get(driverURL)
             .then(response => {
                 const html = response.data
                 const $ = load(html)
-                specificQuotes = [] //cleaning array
-                let index = 0
+                
                 /* getting the quote div including the author, then slicing the quote and the author */
                 $(specificQuoteContent).each(function () {
                     index++
-                    let rawQuote = $(this).text().replace(/\n/g, '')
-                    let author = ''
-                    let quote = ''
+                    let rawQuote = $(this).text().replace(/\n/g, '')     
 
                     const lastDotIndex = rawQuote.lastIndexOf('.')
                     const lastExclIndex = rawQuote.lastIndexOf('!')
@@ -253,6 +256,8 @@ const specificDriver = (req:any,res: Response<any, Record<string, any>, number>)
                 }
                 
             }).catch(err => console.log(err))
+        }
+        
     } else {
         res.json('`'+driverId + driverQuotesErrorMsg)
     }
