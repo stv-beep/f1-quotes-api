@@ -4,6 +4,7 @@ export enum driverName {
     Mattia_Binotto = 'binotto',
     Valtteri_Bottas = 'bottas',
     Jenson_Button = 'button',
+    Bernie_Ecclestone = 'ecclestone',
     Marcus_Ericsson = 'ericsson',
     Juan_Manuel_Fangio = 'fangio',
     Emerson_Fittipaldi = 'fittipaldi',

@@ -278,6 +278,11 @@ export const drivers = [
         name: 'Gilles Villeneuve',
         address: 'https://www.brainyquote.com/authors/gilles-villeneuve-quotes',
         driverId: 'gilles-villeneuve'
+    },
+    {
+        name: 'Bernie Ecclestone',
+        address: 'https://www.brainyquote.com/authors/bernie-ecclestone-quotes',
+        driverId: 'ecclestone'
     }
 ]
 
