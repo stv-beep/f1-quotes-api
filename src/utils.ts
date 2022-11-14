@@ -6,7 +6,7 @@ export const isDriver = (param: any): boolean => {
     return Object.values(driverName).includes(param)
 }
 
-export const pagination = (pageN: number, specificQuotes: any) => {
+export const pagination = (pageN: number, specificQuotes: string | { id: number; quote: string; author: string }[]) => {
     const pageSize = 10
     if (pageN > 1 && pageN <= 6) {
         if (pageN === 2) {

@@ -3,7 +3,7 @@ import axios from 'axios'
 import { load } from 'cheerio'
 import { drivers, top10 } from '../services/drivers'
 import { isDriver, pagination } from '../utils'
-import { Response } from 'express-serve-static-core'
+import { Request, Response } from 'express-serve-static-core'
 
 const router = express.Router()
 
@@ -18,7 +18,6 @@ export const notEnoughQuotes: string = 'This driver doesn\'t have that number of
 
 const quoteContent: string = '.quoteContent'
 const specificQuoteContent: string = '.qb'
-const azquotesClass: string = '.title' //provisional
 
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
 
@@ -181,7 +180,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
     }
 })
 
-const specificDriver = (req:any,res: Response<any, Record<string, any>, number>) => {
+const specificDriver = (req:Request,res: Response<any, Record<string, any>, number>) => {
     const driverId = req.params.driverId
     let specQuoteID:number = 0
     if (req.params.quoteId != null || req.params.quoteId != undefined) {
@@ -244,7 +243,7 @@ const specificDriver = (req:any,res: Response<any, Record<string, any>, number>)
                     })
                 })
 
-                if (req.params.quoteId <= 0) {
+                if (Number(req.params.quoteId) <= 0) {
                     res.json(idTooSmall)
                 } else {
                     if (req.params.quoteId != null || req.params.quoteId != undefined) {
