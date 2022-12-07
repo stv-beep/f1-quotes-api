@@ -283,11 +283,6 @@ export const drivers = [
         name: 'Bernie Ecclestone',
         address: 'https://www.brainyquote.com/authors/bernie-ecclestone-quotes',
         driverId: 'ecclestone'
-    },
-    {
-        name: 'Bernie Ecclestone',
-        address: 'https://www.azquotes.com/author/31745-Bernie_Ecclestone',
-        driverId: 'ecclestone'
     }
 ]
 

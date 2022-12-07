@@ -186,75 +186,77 @@ const specificDriver = (req:Request,res: Response<any, Record<string, any>, numb
     if (req.params.quoteId != null || req.params.quoteId != undefined) {
         specQuoteID = Number(req.params.quoteId) -1
     }
+    specificQuotes = [] //cleaning array
     if (isDriver(driverId)) {
         const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
         let author = ''
         let quote = ''
-        specificQuotes = [] //cleaning array
+        
         let index = 0
 
-        if (driverURL.includes('brainyquote')) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-                
-                /* getting the quote div including the author, then slicing the quote and the author */
-                $(specificQuoteContent).each(function () {
-                    index++
-                    let rawQuote = $(this).text().replace(/\n/g, '')     
+        //addresses loop
+        for (let i = 0; i < drivers.filter(driver => driver.driverId === driverId).length; i++){
+                axios.get(driverURL)
+                .then(response => {
+                    const html = response.data
+                    const $ = load(html)
+                    
+                    /* getting the quote div including the author, then slicing the quote and the author */
+                    $(specificQuoteContent).each(function () {
+                        index++
+                        let rawQuote = $(this).text().replace(/\n/g, '')     
 
-                    const lastDotIndex = rawQuote.lastIndexOf('.')
-                    const lastExclIndex = rawQuote.lastIndexOf('!')
-                    const lastInterrIndex = rawQuote.lastIndexOf('?')
-                    //if there's no '.' so probably last character is '!' or '?'
-                    if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
+                        const lastDotIndex = rawQuote.lastIndexOf('.')
+                        const lastExclIndex = rawQuote.lastIndexOf('!')
+                        const lastInterrIndex = rawQuote.lastIndexOf('?')
+                        //if there's no '.' so probably last character is '!' or '?'
+                        if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
 
-                        if (rawQuote.includes('!')) {
-                            quote = rawQuote.slice(0, lastExclIndex+1)
-                            author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
+                            if (rawQuote.includes('!')) {
+                                quote = rawQuote.slice(0, lastExclIndex+1)
+                                author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
 
-                        } else if (rawQuote.includes('?')) {
-                            quote = rawQuote.slice(0, lastInterrIndex+1)
-                            author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
-                        }
-                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
+                            } else if (rawQuote.includes('?')) {
+                                quote = rawQuote.slice(0, lastInterrIndex+1)
+                                author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
+                            }
+                            alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
 
-                    } else {
-                        
-                        if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
-                            rawQuote = rawQuote.replace('Jr.', 'Jr')
-                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-           
                         } else {
-                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+                            
+                            if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
+                                rawQuote = rawQuote.replace('Jr.', 'Jr')
+                                author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                                rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                                quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+            
+                            } else {
+                                author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                                rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                                quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+                            }
+                            alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
+                            
                         }
-                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
-                        
-                    }
-                    specificQuotes.push({
-                        id: index,
-                        quote: quote,
-                        author: author
+                        specificQuotes.push({
+                            id: index,
+                            quote: quote,
+                            author: author
+                        })
                     })
-                })
 
-                if (Number(req.params.quoteId) <= 0) {
-                    res.json(idTooSmall)
-                } else {
-                    if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                        specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
-                        res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
-                    } else {
-                        res.json(specificQuotes)
-                    }
-                }
+                        if (Number(req.params.quoteId) <= 0) {
+                            res.json(idTooSmall)
+                        } else {
+                            if (req.params.quoteId != null || req.params.quoteId != undefined) {
+                                specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
+                                res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
+                            } else {
+                                res.json(specificQuotes)
+                            }
+                        } 
                 
-            }).catch(err => console.log(err))
+                }).catch(err => console.log(err))
         }
         
     } else {
