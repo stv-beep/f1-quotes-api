@@ -1,5 +1,7 @@
 export enum driverName {
+    Jean_Alesi = 'alesi',
     Fernando_Alonso = 'alonso',
+    Mario_Andretti = 'andretti',
     Rubens_Barrichello = 'barrichello',
     Mattia_Binotto = 'binotto',
     Valtteri_Bottas = 'bottas',
@@ -39,6 +41,7 @@ export enum driverName {
     Lance_Stroll = 'stroll',
     John_Surtees = 'surtees',
     Max_Verstappen = 'verstappen',
+    Jos_Verstappen = 'jos-verstappen',
     Sebastian_Vettel = 'vettel',
     Gilles_Villeneuve = 'gilles-villeneuve',
     Jacques_Villeneuve = 'jacques-villeneuve',

@@ -283,6 +283,26 @@ export const drivers = [
         name: 'Bernie Ecclestone',
         address: 'https://www.brainyquote.com/authors/bernie-ecclestone-quotes',
         driverId: 'ecclestone'
+    },
+    {
+        name: 'Jean Alesi',
+        address: 'https://www.brainyquote.com/authors/jean-alesi-quotes',
+        driverId: 'alesi'
+    },
+    {
+        name: 'Jos Verstappen',
+        address: 'https://www.brainyquote.com/authors/jos-verstappen-quotes',
+        driverId: 'jos-verstappen'
+    },
+    {
+        name: 'Mario Andretti',
+        address: 'https://www.brainyquote.com/authors/mario-andretti-quotes',
+        driverId: 'andretti'
+    },
+    {
+        name: 'Mario Andretti',
+        address: 'https://www.brainyquote.com/authors/mario-andretti-quotes_2',
+        driverId: 'andretti'
     }
 ]
 
