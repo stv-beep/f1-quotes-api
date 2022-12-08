@@ -19,6 +19,7 @@ export const notEnoughQuotes: string = 'This driver doesn\'t have that number of
 const quoteContent: string = '.quoteContent'
 const specificQuoteContent: string = '.qb'
 
+
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
 
 
@@ -115,17 +116,18 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
     const driverId = req.params.driverId
 
     const pageN = Number(req.params.page)
-
+    specificQuotes = [] //cleaning array
+    let index = 0
     if (isDriver(driverId)) {
         
         const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
-
+        if (driverURL.includes('brainyquote')) {
         axios.get(driverURL)
             .then(response => {
                 const html = response.data
                 const $ = load(html)
                 specificQuotes = [] //cleaning array
-                let index = 0
+                
                 /* getting the quote div including the author, then slicing the quote and the author */
                 $(specificQuoteContent).each(function () {
                     index++
@@ -175,6 +177,48 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                 res.json(pagination(pageN, specificQuotes))
 
             }).catch(err => console.log(err))
+
+        } else if (driverURL.includes('quotes.net')) {
+            axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+
+                $('blockquote').each(function () {
+                    index++
+                    let rawQuote = $(this).text()
+                    specificQuotes.push({
+                        id: index,
+                        quote: rawQuote,
+                        author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                    })
+                    
+                })
+                res.json(pagination(pageN, specificQuotes))
+            }).catch(err => console.log(err))
+            
+        } else if (driverURL.includes('azquotes')) {
+            axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+                index = -1 //bcs i delete the first element
+
+                $('li div p a').each(function () {
+                    index++
+                    let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
+                    specificQuotes.push({
+                        id: index,
+                        quote: rawQuote,
+                        author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                    })
+                    
+                })
+                specificQuotes.shift()
+                res.json(pagination(pageN, specificQuotes))
+            }).catch(err => console.log(err))
+        }
+
     } else {
         res.json('`'+driverId + driverQuotesErrorMsg)
     }
@@ -196,6 +240,7 @@ const specificDriver = (req:Request,res: Response<any, Record<string, any>, numb
 
         //addresses loop
         for (let i = 0; i < drivers.filter(driver => driver.driverId === driverId).length; i++){
+            if (driverURL.includes('brainyquote')) {
                 axios.get(driverURL)
                 .then(response => {
                     const html = response.data
@@ -204,7 +249,7 @@ const specificDriver = (req:Request,res: Response<any, Record<string, any>, numb
                     /* getting the quote div including the author, then slicing the quote and the author */
                     $(specificQuoteContent).each(function () {
                         index++
-                        let rawQuote = $(this).text().replace(/\n/g, '')     
+                        let rawQuote = $(this).text().replace(/\n/g, '')
 
                         const lastDotIndex = rawQuote.lastIndexOf('.')
                         const lastExclIndex = rawQuote.lastIndexOf('!')
@@ -257,6 +302,65 @@ const specificDriver = (req:Request,res: Response<any, Record<string, any>, numb
                         } 
                 
                 }).catch(err => console.log(err))
+
+            } else if (driverURL.includes('quotes.net')) {
+                axios.get(driverURL)
+                .then(response => {
+                    const html = response.data
+                    const $ = load(html)
+
+                    $('blockquote').each(function () {
+                        index++
+                        let rawQuote = $(this).text()
+                        specificQuotes.push({
+                            id: index,
+                            quote: rawQuote,
+                            author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                        })
+                        
+                    })
+                    if (Number(req.params.quoteId) <= 0) {
+                            res.json(idTooSmall)
+                        } else {
+                            if (req.params.quoteId != null || req.params.quoteId != undefined) {
+                                specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
+                                res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
+                            } else {
+                                res.json(specificQuotes)
+                            }
+                        }
+                }).catch(err => console.log(err))
+                
+            } else if (driverURL.includes('azquotes')) {
+                axios.get(driverURL)
+                .then(response => {
+                    const html = response.data
+                    const $ = load(html)
+                    index = -1 //bcs i delete the first element
+
+                    $('li div p a').each(function () {
+                        index++
+                        let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
+                        specificQuotes.push({
+                            id: index,
+                            quote: rawQuote,
+                            author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                        })
+                        
+                    })
+                    specificQuotes.shift()
+                    if (Number(req.params.quoteId) <= 0) {
+                            res.json(idTooSmall)
+                        } else {
+                            if (req.params.quoteId != null || req.params.quoteId != undefined) {
+                                specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
+                                res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
+                            } else {
+                                res.json(specificQuotes)
+                            }
+                        }
+                }).catch(err => console.log(err))
+            }
         }
         
     } else {

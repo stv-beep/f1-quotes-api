@@ -303,7 +303,43 @@ export const drivers = [
         name: 'Mario Andretti',
         address: 'https://www.brainyquote.com/authors/mario-andretti-quotes_2',
         driverId: 'andretti'
+    },
+    {
+        name: 'Pierre Gasly',
+        address: 'https://www.quotes.net/authors/Pierre+Gasly',
+        driverId: 'gasly'
+    },
+    {
+        name: 'Yuki Tsunoda',
+        address: 'https://www.quotes.net/authors/Yuki+Tsunoda',
+        driverId: 'tsunoda'
+    },
+    {
+        name: 'Alexander Albon',
+        address: 'https://www.quotes.net/author.php?name=Red+Bull+Alexander+Albon',
+        driverId: 'albon'
+    },
+    {
+        name: 'Mika Häkkinen',
+        address: 'https://www.azquotes.com/author/50755-Mika_Hakkinen',
+        driverId: 'hakkinen'
+    },
+    {
+        name: 'David Coulthard',
+        address: 'https://www.brainyquote.com/authors/david-coulthard-quotes',
+        driverId: 'coulthard'
+    },
+    {
+        name: 'David Coulthard',
+        address: 'https://www.brainyquote.com/authors/david-coulthard-quotes_2',
+        driverId: 'coulthard'
+    },
+    {
+        name: 'Nicholas Latifi',
+        address: 'https://www.quotes.net/authors/Nicholas+Latifi',
+        driverId: 'latifi'
     }
+
 ]
 
 export const top10 = 'https://www.brainyquote.com/lists/topics/top-10-f1-quotes'
