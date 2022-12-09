@@ -1,7 +1,7 @@
 import express from 'express'
 import axios from 'axios'
 import { load } from 'cheerio'
-import { drivers, top10 } from '../services/drivers'
+import { drivers, top10, sites } from '../services/drivers'
 import { isDriver, pagination } from '../utils'
 import { Request, Response } from 'express-serve-static-core'
 
@@ -233,139 +233,169 @@ const specificDriver = (req:Request,res: Response<any, Record<string, any>, numb
     specificQuotes = [] //cleaning array
     if (isDriver(driverId)) {
         const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
-        let author = ''
-        let quote = ''
+        const authorName = drivers.filter(driver => driver.driverId === driverId)[0].name
         
-        let index = 0
-
-        //addresses loop
-        for (let i = 0; i < drivers.filter(driver => driver.driverId === driverId).length; i++){
-            if (driverURL.includes('brainyquote')) {
-                axios.get(driverURL)
-                .then(response => {
-                    const html = response.data
-                    const $ = load(html)
-                    
-                    /* getting the quote div including the author, then slicing the quote and the author */
-                    $(specificQuoteContent).each(function () {
-                        index++
-                        let rawQuote = $(this).text().replace(/\n/g, '')
-
-                        const lastDotIndex = rawQuote.lastIndexOf('.')
-                        const lastExclIndex = rawQuote.lastIndexOf('!')
-                        const lastInterrIndex = rawQuote.lastIndexOf('?')
-                        //if there's no '.' so probably last character is '!' or '?'
-                        if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
-
-                            if (rawQuote.includes('!')) {
-                                quote = rawQuote.slice(0, lastExclIndex+1)
-                                author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
-
-                            } else if (rawQuote.includes('?')) {
-                                quote = rawQuote.slice(0, lastInterrIndex+1)
-                                author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
-                            }
-                            alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
-
-                        } else {
-                            
-                            if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
-                                rawQuote = rawQuote.replace('Jr.', 'Jr')
-                                author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                                rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                                quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-            
-                            } else {
-                                author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                                rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                                quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-                            }
-                            alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
-                            
-                        }
-                        specificQuotes.push({
-                            id: index,
-                            quote: quote,
-                            author: author
-                        })
-                    })
-
-                        if (Number(req.params.quoteId) <= 0) {
-                            res.json(idTooSmall)
-                        } else {
-                            if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                                specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
-                                res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
-                            } else {
-                                res.json(specificQuotes)
-                            }
-                        } 
-                
-                }).catch(err => console.log(err))
-
-            } else if (driverURL.includes('quotes.net')) {
-                axios.get(driverURL)
-                .then(response => {
-                    const html = response.data
-                    const $ = load(html)
-
-                    $('blockquote').each(function () {
-                        index++
-                        let rawQuote = $(this).text()
-                        specificQuotes.push({
-                            id: index,
-                            quote: rawQuote,
-                            author: drivers.filter(driver => driver.driverId === driverId)[0].name
-                        })
-                        
-                    })
-                    if (Number(req.params.quoteId) <= 0) {
-                            res.json(idTooSmall)
-                        } else {
-                            if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                                specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
-                                res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
-                            } else {
-                                res.json(specificQuotes)
-                            }
-                        }
-                }).catch(err => console.log(err))
-                
-            } else if (driverURL.includes('azquotes')) {
-                axios.get(driverURL)
-                .then(response => {
-                    const html = response.data
-                    const $ = load(html)
-                    index = -1 //bcs i delete the first element
-
-                    $('li div p a').each(function () {
-                        index++
-                        let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
-                        specificQuotes.push({
-                            id: index,
-                            quote: rawQuote,
-                            author: drivers.filter(driver => driver.driverId === driverId)[0].name
-                        })
-                        
-                    })
-                    specificQuotes.shift()
-                    if (Number(req.params.quoteId) <= 0) {
-                            res.json(idTooSmall)
-                        } else {
-                            if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                                specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
-                                res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
-                            } else {
-                                res.json(specificQuotes)
-                            }
-                        }
-                }).catch(err => console.log(err))
-            }
-        }
+        scrapQuotes(driverURL, authorName, req, res, specQuoteID, sites)
         
     } else {
         res.json('`'+driverId + driverQuotesErrorMsg)
     }
+}
+
+const scrapQuotes = (driverURL: string, authorName: string, req:Request, 
+    res: Response<any, Record<string, any>, number>, specQuoteID: number, sites: Array<string>) => {
+        let index = 0
+
+        if (driverURL.includes(sites[0])) {
+            axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+                let author = ''
+                let quote = ''
+                        
+                /* getting the quote div including the author, then slicing the quote and the author */
+                $(specificQuoteContent).each(function () {
+                    index++
+                    let rawQuote = $(this).text().replace(/\n/g, '')
+
+                    const lastDotIndex = rawQuote.lastIndexOf('.')
+                    const lastExclIndex = rawQuote.lastIndexOf('!')
+                    const lastInterrIndex = rawQuote.lastIndexOf('?')
+                    //if there's no '.' so probably last character is '!' or '?'
+                    if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
+
+                        if (rawQuote.includes('!')) {
+                            quote = rawQuote.slice(0, lastExclIndex+1)
+                            author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
+
+                        } else if (rawQuote.includes('?')) {
+                            quote = rawQuote.slice(0, lastInterrIndex+1)
+                            author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
+                        }
+                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
+
+                    } else {
+                        
+                        if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
+                            rawQuote = rawQuote.replace('Jr.', 'Jr')
+                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+        
+                        } else {
+                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+                        }
+                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
+                        
+                    }
+                    specificQuotes.push({
+                        id: index,
+                        quote: quote,
+                        author: author
+                    })
+                })
+
+                    if (Number(req.params.quoteId) <= 0) {
+                        res.json(idTooSmall)
+                    } else {
+                        if (req.params.quoteId != null || req.params.quoteId != undefined) {
+                            specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
+                            res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
+                        } else {
+                            res.json(specificQuotes)
+                        }
+                    } 
+            
+            }).catch(err => console.log(err))
+
+        } else if (driverURL.includes(sites[1])) {
+            axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+
+                $('blockquote').each(function () {
+                    index++
+                    let rawQuote = $(this).text()
+                    specificQuotes.push({
+                        id: index,
+                        quote: rawQuote,
+                        author: authorName
+                    })
+                    
+                })
+                if (Number(req.params.quoteId) <= 0) {
+                        res.json(idTooSmall)
+                    } else {
+                        if (req.params.quoteId != null || req.params.quoteId != undefined) {
+                            specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
+                            res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
+                        } else {
+                            res.json(specificQuotes)
+                        }
+                    }
+            }).catch(err => console.log(err))
+            
+        } else if (driverURL.includes(sites[2])) {
+            axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+                index = -1 //bcs i delete the first element
+
+                $('li div p a').each(function () {
+                    index++
+                    let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
+                    specificQuotes.push({
+                        id: index,
+                        quote: rawQuote,
+                        author: authorName
+                    })
+                    
+                })
+                specificQuotes.shift()
+                if (Number(req.params.quoteId) <= 0) {
+                        res.json(idTooSmall)
+                    } else {
+                        if (req.params.quoteId != null || req.params.quoteId != undefined) {
+                            specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
+                            res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
+                        } else {
+                            res.json(specificQuotes)
+                        }
+                    }
+            }).catch(err => console.log(err))
+        } else if (driverURL.includes(sites[3])) {
+            axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+
+                $('blockquote').each(function () {
+                    index++
+                    let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
+                    specificQuotes.push({
+                        id: index,
+                        quote: rawQuote,
+                        author: authorName
+                    })
+                    
+                })
+                if (Number(req.params.quoteId) <= 0) {
+                        res.json(idTooSmall)
+                    } else {
+                        if (req.params.quoteId != null || req.params.quoteId != undefined) {
+                            specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
+                            res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
+                        } else {
+                            res.json(specificQuotes)
+                        }
+                    }
+            }).catch(err => console.log(err))
+        }
 }
 
 export default router;

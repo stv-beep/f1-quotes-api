@@ -262,7 +262,7 @@ export const drivers = [
     {
         name: 'Damon Hill',
         address: 'https://www.brainyquote.com/authors/damon-hill-quotes',
-        driverId: 'hill'
+        driverId: 'damon-hill'
     },
     {
         name: 'Jacques Villeneuve',
@@ -281,7 +281,7 @@ export const drivers = [
     },
     {
         name: 'Bernie Ecclestone',
-        address: 'https://www.brainyquote.com/authors/bernie-ecclestone-quotes',
+        address: 'https://www.azquotes.com/author/31745-Bernie_Ecclestone',
         driverId: 'ecclestone'
     },
     {
@@ -338,8 +338,38 @@ export const drivers = [
         name: 'Nicholas Latifi',
         address: 'https://www.quotes.net/authors/Nicholas+Latifi',
         driverId: 'latifi'
+    },
+    {
+        name: 'Alberto Ascari',
+        address: 'https://www.azquotes.com/author/44376-Alberto_Ascari',
+        driverId: 'ascari'
+    },
+    {
+        name: 'Jack Brabham',
+        address: 'https://www.azquotes.com/author/30675-Jack_Brabham',
+        driverId: 'brabham'
+    },
+    {
+        name: 'Graham Hill',
+        address: 'https://www.azquotes.com/author/29661-Graham_Hill',
+        driverId: 'graham-hill'
+    },
+    {
+        name: 'Jody Scheckter',
+        address: 'https://www.azquotes.com/author/37099-Jody_Scheckter',
+        driverId: 'scheckter'
+    },
+    {
+        name: 'Flavio Briatore',
+        address: 'https://www.quotetab.com/quotes/by-flavio-briatore',
+        driverId: 'briatore'
+    },
+    {
+        name: 'Phil Hill',
+        address: 'https://www.azquotes.com/author/66447-Phil_Hill',
+        driverId: 'phil-hill'
     }
-
 ]
 
 export const top10 = 'https://www.brainyquote.com/lists/topics/top-10-f1-quotes'
+export const sites = ['brainyquote','quotes.net','azquotes', 'quotetab']
