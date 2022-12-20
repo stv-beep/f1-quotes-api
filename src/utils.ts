@@ -1,31 +1,51 @@
 import { driverName } from './types'
-import { notEnoughQuotes } from './routes/driversQuotes'
 
-/* check if input is correct driver from list */
+
+/**
+ * Checks if the input is a correct driver name from the list of drivers in types.ts.
+ * Returns a boolean.
+ * @param param 
+ * @returns 
+ */
 export const isDriver = (param: any): boolean => {
     return Object.values(driverName).includes(param)
 }
 
+/**
+ * Paginates all the quotes of the driver in 10 quotes per page. 
+ * Currently, since the maximum number of quotations per person is 60, the maximum number of pages is 6.
+ * Returns the quotes sliced in pages.
+ * @param pageN 
+ * @param specificQuotes 
+ * @returns 
+ */
 export const pagination = (pageN: number, specificQuotes: string | { id: number; quote: string; author: string }[]) => {
     const pageSize = 10
+    const length = Math.ceil(specificQuotes.length/pageSize)
+
+    if (isNaN(pageN)) {
+        return `Not valid data. Try a number.`
+    } 
+    
     if (pageN > 1 && pageN <= 6) {
         if (pageN === 2) {
             if (specificQuotes.slice(pageSize, pageN*pageSize) == '') {
-                return notEnoughQuotes
+                return `This driver doesn\'t have that number of quotes in the database. Try ${length} page.`
             } else {
                 return specificQuotes.slice(pageSize, pageN*pageSize)
             }
         } else if (pageN >= 3) {
             let size = (pageN -1)*10
             if (specificQuotes.slice(size, pageN*pageSize) == '') {
-                return notEnoughQuotes
+                return `This driver doesn\'t have that number of quotes in the database. Try between 1-${length} pages.`
             } else {
                 return specificQuotes.slice(size, pageN*pageSize)
             }
         }
     } else if (pageN < 1 || pageN > 6) {
 
-        return notEnoughQuotes
+        return length == 1 ? `Number of pages not valid. Try 1 page.` : 
+        `Number of pages not valid. Try between 1-${length}.`
 
     } else {
         return specificQuotes.slice(0, pageN*pageSize)

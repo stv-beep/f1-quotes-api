@@ -14,10 +14,9 @@ const quotesErrorMessage: string = 'Something went wrong or your input is not co
 const driverQuotesErrorMsg: string = '` is not in the database or the input is incorrect.'
 const idNotFound: string = 'This driver doesn\'t have that number of quotes in the database. Try smaller numbers.'
 const idTooSmall: string = 'This driver doesn\'t have that number of quotes in the database. Try positive numbers.'
-export const notEnoughQuotes: string = 'This driver doesn\'t have that number of quotes in the database. Try between 1-6 pages.'
 
 const quoteContent: string = '.quoteContent'
-const specificQuoteContent: string = '.qb'
+const markupElements = ['.qb','blockquote','li div p a','blockquote']
 
 
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
@@ -121,7 +120,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
     if (isDriver(driverId)) {
         
         const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
-        if (driverURL.includes('brainyquote')) {
+        if (driverURL.includes(sites[0])) {
         axios.get(driverURL)
             .then(response => {
                 const html = response.data
@@ -129,7 +128,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                 specificQuotes = [] //cleaning array
                 
                 /* getting the quote div including the author, then slicing the quote and the author */
-                $(specificQuoteContent).each(function () {
+                $(markupElements[0]).each(function () {
                     index++
                     let rawQuote = $(this).text().replace(/\n/g, '')
                     let author = ''
@@ -178,13 +177,13 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
 
             }).catch(err => console.log(err))
 
-        } else if (driverURL.includes('quotes.net')) {
+        } else if (driverURL.includes(sites[1])) {
             axios.get(driverURL)
             .then(response => {
                 const html = response.data
                 const $ = load(html)
 
-                $('blockquote').each(function () {
+                $(markupElements[1]).each(function () {
                     index++
                     let rawQuote = $(this).text()
                     specificQuotes.push({
@@ -197,16 +196,37 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                 res.json(pagination(pageN, specificQuotes))
             }).catch(err => console.log(err))
             
-        } else if (driverURL.includes('azquotes')) {
+        } else if (driverURL.includes(sites[2])) {
             axios.get(driverURL)
             .then(response => {
                 const html = response.data
                 const $ = load(html)
                 index = -1 //bcs i delete the first element
 
-                $('li div p a').each(function () {
+                $(markupElements[2]).each(function () {
                     index++
                     let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
+                    specificQuotes.push({
+                        id: index,
+                        quote: rawQuote,
+                        author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                    })
+                    
+                })
+                specificQuotes.shift()
+                res.json(pagination(pageN, specificQuotes))
+            }).catch(err => console.log(err))
+
+        } else if (driverURL.includes(sites[3])) {
+            axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+                index = -1
+
+                $(markupElements[3]).each(function () {
+                    index++
+                    let rawQuote = $(this).text()
                     specificQuotes.push({
                         id: index,
                         quote: rawQuote,
@@ -224,6 +244,11 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
     }
 })
 
+/**
+ * Gets the driver ID and returns a json response containing all the quotes of the driver.
+ * @param req driver ID
+ * @param res driver quotes
+ */
 const specificDriver = (req:Request,res: Response<any, Record<string, any>, number>) => {
     const driverId = req.params.driverId
     let specQuoteID:number = 0
@@ -242,6 +267,16 @@ const specificDriver = (req:Request,res: Response<any, Record<string, any>, numb
     }
 }
 
+/**
+ * Gets the driver ID, author name and other data to response with the quotes of the person. 
+ * Contains the logic to get the quotes data.
+ * @param driverURL 
+ * @param authorName 
+ * @param req 
+ * @param res 
+ * @param specQuoteID 
+ * @param sites 
+ */
 const scrapQuotes = (driverURL: string, authorName: string, req:Request, 
     res: Response<any, Record<string, any>, number>, specQuoteID: number, sites: Array<string>) => {
         let index = 0
@@ -255,7 +290,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                 let quote = ''
                         
                 /* getting the quote div including the author, then slicing the quote and the author */
-                $(specificQuoteContent).each(function () {
+                $(markupElements[0]).each(function () {
                     index++
                     let rawQuote = $(this).text().replace(/\n/g, '')
 
@@ -317,7 +352,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                 const html = response.data
                 const $ = load(html)
 
-                $('blockquote').each(function () {
+                $(markupElements[1]).each(function () {
                     index++
                     let rawQuote = $(this).text()
                     specificQuotes.push({
@@ -346,7 +381,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                 const $ = load(html)
                 index = -1 //bcs i delete the first element
 
-                $('li div p a').each(function () {
+                $(markupElements[2]).each(function () {
                     index++
                     let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
                     specificQuotes.push({
@@ -374,7 +409,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                 const html = response.data
                 const $ = load(html)
 
-                $('blockquote').each(function () {
+                $(markupElements[3]).each(function () {
                     index++
                     let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
                     specificQuotes.push({
