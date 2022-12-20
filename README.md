@@ -1,7 +1,7 @@
 <h1>🏎 Formula 1 quotes API 🏎</h1>
 
 <p>
-<img alt="Version" src="https://img.shields.io/badge/version-0.6.13-greenyellow.svg"/>
+<img alt="Version" src="https://img.shields.io/badge/version-0.6.14-greenyellow.svg"/>
 <img src="https://img.shields.io/badge/npm-%3E%3D8.5.0-blue.svg"/>
 <img src="https://img.shields.io/badge/node-%3E%3D16.14.2-blue.svg"/>
 </p>
@@ -26,7 +26,7 @@
 #### GET 10 quotes in each page of an specific F1 driver **->** GET ```/quotes/:drivers_last_name/p/:page```
   
 
-## Dev:
+## Development setup:
 
 ```npm install```
 
