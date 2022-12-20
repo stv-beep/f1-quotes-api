@@ -19,11 +19,11 @@
 
 #### GET 10 interesting quotes of F1 drivers or personalities **->** GET ```/quotes```
 
-#### GET all saved quotes from an specific F1 driver **->** GET ```/quotes/:drivers_last_name```
+#### GET all saved quotes from a specific F1 driver **->** GET ```/quotes/:drivers_last_name```
 
-#### GET a specific quote from an specific F1 driver **->** GET ```/quotes/:drivers_last_name/:quote_id```
+#### GET a specific quote from a specific F1 driver **->** GET ```/quotes/:drivers_last_name/:quote_id```
 
-#### GET 10 quotes in each page of an specific F1 driver **->** GET ```/quotes/:drivers_last_name/p/:page```
+#### GET 10 quotes in each page of a specific F1 driver **->** GET ```/quotes/:drivers_last_name/p/:page```
   
 
 ## Development setup:
