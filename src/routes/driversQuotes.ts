@@ -153,16 +153,13 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                     } else {
                         
                         if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
-                            rawQuote = rawQuote.replace('Jr.', 'Jr')
-                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-           
-                        } else {
-                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-                        }
+                            rawQuote = rawQuote.replace('Jr.', 'Jr')      
+                        } 
+
+                        author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                        rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                        quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+                        
                         alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
                         
                     }
@@ -222,7 +219,6 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
             .then(response => {
                 const html = response.data
                 const $ = load(html)
-                index = -1
 
                 $(markupElements[3]).each(function () {
                     index++
@@ -234,7 +230,6 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                     })
                     
                 })
-                specificQuotes.shift()
                 res.json(pagination(pageN, specificQuotes))
             }).catch(err => console.log(err))
         }
@@ -313,16 +308,13 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                     } else {
                         
                         if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
-                            rawQuote = rawQuote.replace('Jr.', 'Jr')
-                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-        
-                        } else {
-                            author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                            rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                            quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+                            rawQuote = rawQuote.replace('Jr.', 'Jr')        
                         }
+                        
+                        author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
+                        rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
+                        quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
+                        
                         alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
                         
                     }
