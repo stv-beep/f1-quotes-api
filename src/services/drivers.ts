@@ -368,6 +368,21 @@ export const drivers = [
         name: 'Phil Hill',
         address: 'https://www.azquotes.com/author/66447-Phil_Hill',
         driverId: 'phil-hill'
+    },
+    {
+        name: 'Ron Dennis',
+        address: 'https://www.azquotes.com/author/33028-Ron_Dennis',
+        driverId: 'dennis'
+    },
+    {
+        name: 'Eddie Irvine',
+        address: 'https://www.azquotes.com/author/45955-Eddie_Irvine',
+        driverId: 'irvine'
+    },
+    {
+        name: 'Ross Brawn',
+        address: 'https://www.quotetab.com/quotes/by-ross-brawn',
+        driverId: 'brawn'
     }
 ]
 
