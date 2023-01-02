@@ -51,25 +51,16 @@ axios.get(top10)
                     quote: specialQuote,
                     author: author
                 })
-            } else if (lastDotIndex === -1 || lastDotIndex < lastApostropheIndex || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex 
-                ) {
+            } else if (lastDotIndex === -1 || lastDotIndex < lastApostropheIndex || lastDotIndex < lastExclIndex 
+                || lastDotIndex < lastInterrIndex) {
 
-                if (rawQuote.includes('!')) {
-                    specialQuote = rawQuote.slice(0, lastExclIndex+1)
-                    author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
-
-                } else if (rawQuote.includes('?')) {
-                    specialQuote = rawQuote.slice(0, lastInterrIndex)
-                    author = rawQuote.slice(lastInterrIndex, rawQuote.length)
-                } else if (rawQuote.includes("'")) {
-                    specialQuote = rawQuote.slice(0, lastApostropheIndex)
-                    author = rawQuote.slice(lastInterrIndex, rawQuote.length)
-                }
-                alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length) 
+                let quoteText = includesSymbol($(this).text(), rawQuote, specialQuote, author, true)
+                
+                alphaRegex.test(quoteText.author.slice(0,1)) ? true : quoteText.author = quoteText.author.slice(2,quoteText.author.length) 
                 quotes.push({
                     id: index,
-                    quote: specialQuote,
-                    author: author
+                    quote: quoteText.specialQuote,
+                    author: quoteText.author
                 })
 
             } else {
@@ -96,6 +87,28 @@ router.get('/', (req, res) => { //quotes
     : res.json(quotesErrorMessage) 
 })
 
+/**
+ * Looks for any symbol in the quote and slice it.
+ * @param rawText 
+ * @param rawQuote 
+ * @param specialQuote 
+ * @param author 
+ * @param top
+ * @returns quote and author object
+ */
+const includesSymbol = (rawText:string, rawQuote: string, specialQuote: string, author: string, top: boolean) => {
+    const symbols = ['!', "'", '?']
+    for (let i = 0; i < symbols.length; i++) {
+        if (rawQuote.includes(symbols[i]) && top === true) {
+            specialQuote = rawQuote.slice(0, rawText.lastIndexOf(symbols[i]))
+            author = rawQuote.slice(rawText.lastIndexOf(symbols[i]), rawQuote.length)
+        } else if (rawQuote.includes(symbols[i])){
+            specialQuote = rawQuote.slice(0, rawText.lastIndexOf(symbols[i])+1)
+            author = rawQuote.slice(rawText.lastIndexOf(symbols[i])+1, rawQuote.length)
+        }
+    }
+    return {specialQuote,author}
+}
 
 
 /* specific driver */
@@ -292,16 +305,20 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                     const lastDotIndex = rawQuote.lastIndexOf('.')
                     const lastExclIndex = rawQuote.lastIndexOf('!')
                     const lastInterrIndex = rawQuote.lastIndexOf('?')
+                    const lastApostropheIndex = rawQuote.lastIndexOf("'")
                     //if there's no '.' so probably last character is '!' or '?'
                     if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
 
                         if (rawQuote.includes('!')) {
                             quote = rawQuote.slice(0, lastExclIndex+1)
                             author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
-
+                        
                         } else if (rawQuote.includes('?')) {
                             quote = rawQuote.slice(0, lastInterrIndex+1)
                             author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
+                        } else if (rawQuote.includes("'")) {
+                            quote = rawQuote.slice(0, lastApostropheIndex+1)
+                            author = rawQuote.slice(lastApostropheIndex+1, rawQuote.length)
                         }
                         alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
 
