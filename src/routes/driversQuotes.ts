@@ -324,17 +324,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                         author: author
                     })
                 })
-
-                    if (Number(req.params.quoteId) <= 0) {
-                        res.json(idTooSmall)
-                    } else {
-                        if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                            specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
-                            res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
-                        } else {
-                            res.json(specificQuotes)
-                        }
-                    } 
+                displayQuotes(req,res,specQuoteID)
             
             }).catch(err => console.log(err))
 
@@ -352,18 +342,9 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                         quote: rawQuote,
                         author: authorName
                     })
-                    
                 })
-                if (Number(req.params.quoteId) <= 0) {
-                        res.json(idTooSmall)
-                    } else {
-                        if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                            specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
-                            res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
-                        } else {
-                            res.json(specificQuotes)
-                        }
-                    }
+                displayQuotes(req,res,specQuoteID)
+                
             }).catch(err => console.log(err))
             
         } else if (driverURL.includes(sites[2])) {
@@ -381,19 +362,10 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                         quote: rawQuote,
                         author: authorName
                     })
-                    
                 })
                 specificQuotes.shift()
-                if (Number(req.params.quoteId) <= 0) {
-                        res.json(idTooSmall)
-                    } else {
-                        if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                            specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
-                            res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
-                        } else {
-                            res.json(specificQuotes)
-                        }
-                    }
+                displayQuotes(req,res,specQuoteID)
+
             }).catch(err => console.log(err))
         } else if (driverURL.includes(sites[3])) {
             axios.get(driverURL)
@@ -409,20 +381,31 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                         quote: rawQuote,
                         author: authorName
                     })
-                    
                 })
-                if (Number(req.params.quoteId) <= 0) {
-                        res.json(idTooSmall)
-                    } else {
-                        if (req.params.quoteId != null || req.params.quoteId != undefined) {
-                            specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
-                            res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
-                        } else {
-                            res.json(specificQuotes)
-                        }
-                    }
+                displayQuotes(req,res,specQuoteID)
+
             }).catch(err => console.log(err))
         }
+}
+
+/**
+ * Displays the quotes with a json response.
+ * @param req 
+ * @param res 
+ * @param specQuoteID 
+ */
+const displayQuotes = (req:Request, res: Response<any, Record<string, any>, number>, specQuoteID: number) => {
+
+    if (Number(req.params.quoteId) <= 0) {
+        res.json(idTooSmall)
+    } else {
+        if (req.params.quoteId != null || req.params.quoteId != undefined) {
+            specificQuotes[specQuoteID] !== undefined ? res.json(specificQuotes[specQuoteID]) :
+            res.json(`This driver doesn\'t have that number of quotes in the database. Try between 1-${specificQuotes.length}.`)
+        } else {
+            res.json(specificQuotes)
+        }
+    }
 }
 
 export default router;

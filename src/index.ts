@@ -19,4 +19,4 @@ app.use('/quotes/:driverId/:quoteId', quotesRouter)
 
 app.use('/quotes/:driverId/p/:page', quotesRouter)
 
-app.listen(PORT, () => console.log(`running on http://localhost:${PORT}` + ' on ' + new Date().toLocaleTimeString() , new Date().toLocaleDateString()))
+app.listen(PORT, () => console.log(`API running on PORT:${PORT}`))
