@@ -51,3 +51,36 @@ export const pagination = (pageN: number, specificQuotes: string | { id: number;
         return specificQuotes.slice(0, pageN*pageSize)
     }
 }
+
+/**
+ * Looks for any symbol in the quote and slice it.
+ * @param rawText 
+ * @param rawQuote 
+ * @param specialQuote 
+ * @param author 
+ * @param top
+ * @returns quote and author object
+ */
+export const includesSymbol = (rawQuote: string, specialQuote: string, author: string, top: boolean) => {
+    const symbols = ['!', "'", '?']
+    for (let i = 0; i < symbols.length; i++) {
+        if (rawQuote.includes(symbols[i]) && top === true) {
+            specialQuote = rawQuote.slice(0, rawQuote.lastIndexOf(symbols[i]))
+            author = rawQuote.slice(rawQuote.lastIndexOf(symbols[i]), rawQuote.length)
+        } else if (rawQuote.includes(symbols[i])){
+            specialQuote = rawQuote.slice(0, rawQuote.lastIndexOf(symbols[i])+1)
+            author = rawQuote.slice(rawQuote.lastIndexOf(symbols[i])+1, rawQuote.length)
+        }
+    }
+    return {specialQuote,author}
+}
+
+/**
+ * Cleans the raw scraped text
+ * @param raw 
+ * @returns 
+ */
+export const cleanText = (raw: string) =>
+	raw
+		.replace(/\t|\n|\s:/g, '')
+		.trim()

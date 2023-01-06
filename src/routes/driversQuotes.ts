@@ -2,7 +2,7 @@ import express from 'express'
 import axios from 'axios'
 import { load } from 'cheerio'
 import { drivers, top10, sites } from '../services/drivers'
-import { isDriver, pagination } from '../utils'
+import { isDriver, pagination, includesSymbol, cleanText } from '../utils'
 import { Request, Response } from 'express-serve-static-core'
 
 const router = express.Router()
@@ -36,7 +36,7 @@ axios.get(top10)
             const lastExclIndex = $(this).text().lastIndexOf('!')
             const lastInterrIndex = $(this).text().lastIndexOf('?')
             const lastApostropheIndex = $(this).text().lastIndexOf("'")
-            let rawQuote = $(this).text().replace(/\n/g, '')
+            let rawQuote = cleanText($(this).text())
             let author = ''
             let specialQuote = ''
 
@@ -45,7 +45,7 @@ axios.get(top10)
                 const lastDotIndex = rawQuote.lastIndexOf('.')
                 const quote = rawQuote.replace(/\n/g, '').slice(0, lastDotIndex-1)
                 const author = rawQuote.slice(lastDotIndex+1).replace(/\n/g, '')
-                specialQuote = quote.slice(0, quote.lastIndexOf('.')+1) //quote with an image
+                specialQuote = cleanText(quote.slice(0, quote.lastIndexOf('.')+1)) //quote with an image
                 quotes.push({
                     id: index,
                     quote: specialQuote,
@@ -54,9 +54,8 @@ axios.get(top10)
             } else if (lastDotIndex === -1 || lastDotIndex < lastApostropheIndex || lastDotIndex < lastExclIndex 
                 || lastDotIndex < lastInterrIndex) {
 
-                let quoteText = includesSymbol($(this).text(), rawQuote, specialQuote, author, true)
-                
-                alphaRegex.test(quoteText.author.slice(0,1)) ? true : quoteText.author = quoteText.author.slice(2,quoteText.author.length) 
+                let quoteText = includesSymbol(rawQuote, specialQuote, author, true)
+                alphaRegex.test(quoteText.author.slice(0,1)) ? true : quoteText.author = quoteText.author.slice(1,quoteText.author.length) 
                 quotes.push({
                     id: index,
                     quote: quoteText.specialQuote,
@@ -87,28 +86,7 @@ router.get('/', (req, res) => { //quotes
     : res.json(quotesErrorMessage) 
 })
 
-/**
- * Looks for any symbol in the quote and slice it.
- * @param rawText 
- * @param rawQuote 
- * @param specialQuote 
- * @param author 
- * @param top
- * @returns quote and author object
- */
-const includesSymbol = (rawText:string, rawQuote: string, specialQuote: string, author: string, top: boolean) => {
-    const symbols = ['!', "'", '?']
-    for (let i = 0; i < symbols.length; i++) {
-        if (rawQuote.includes(symbols[i]) && top === true) {
-            specialQuote = rawQuote.slice(0, rawText.lastIndexOf(symbols[i]))
-            author = rawQuote.slice(rawText.lastIndexOf(symbols[i]), rawQuote.length)
-        } else if (rawQuote.includes(symbols[i])){
-            specialQuote = rawQuote.slice(0, rawText.lastIndexOf(symbols[i])+1)
-            author = rawQuote.slice(rawText.lastIndexOf(symbols[i])+1, rawQuote.length)
-        }
-    }
-    return {specialQuote,author}
-}
+
 
 
 /* specific driver */
@@ -143,7 +121,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                 /* getting the quote div including the author, then slicing the quote and the author */
                 $(markupElements[0]).each(function () {
                     index++
-                    let rawQuote = $(this).text().replace(/\n/g, '')
+                    let rawQuote = cleanText($(this).text())
                     let author = ''
                     let quote = ''
 
@@ -195,7 +173,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
 
                 $(markupElements[1]).each(function () {
                     index++
-                    let rawQuote = $(this).text()
+                    let rawQuote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
                         quote: rawQuote,
@@ -215,7 +193,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
 
                 $(markupElements[2]).each(function () {
                     index++
-                    let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
+                    let rawQuote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
                         quote: rawQuote,
@@ -235,7 +213,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
 
                 $(markupElements[3]).each(function () {
                     index++
-                    let rawQuote = $(this).text()
+                    let rawQuote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
                         quote: rawQuote,
@@ -300,7 +278,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                 /* getting the quote div including the author, then slicing the quote and the author */
                 $(markupElements[0]).each(function () {
                     index++
-                    let rawQuote = $(this).text().replace(/\n/g, '')
+                    let rawQuote = cleanText($(this).text())
 
                     const lastDotIndex = rawQuote.lastIndexOf('.')
                     const lastExclIndex = rawQuote.lastIndexOf('!')
@@ -353,7 +331,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
 
                 $(markupElements[1]).each(function () {
                     index++
-                    let rawQuote = $(this).text()
+                    let rawQuote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
                         quote: rawQuote,
@@ -373,7 +351,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
 
                 $(markupElements[2]).each(function () {
                     index++
-                    let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
+                    let rawQuote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
                         quote: rawQuote,
@@ -392,7 +370,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
 
                 $(markupElements[3]).each(function () {
                     index++
-                    let rawQuote = $(this).text().replace(/\n/g, '').replace(/\t/g, '')
+                    let rawQuote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
                         quote: rawQuote,
