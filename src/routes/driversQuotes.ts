@@ -51,11 +51,12 @@ axios.get(top10)
                     quote: specialQuote,
                     author: author
                 })
+            //if the quote does not finish with '.' and finishes with other symbol
             } else if (lastDotIndex === -1 || lastDotIndex < lastApostropheIndex || lastDotIndex < lastExclIndex 
                 || lastDotIndex < lastInterrIndex) {
 
                 let quoteText = includesSymbol(rawQuote, specialQuote, author, true)
-                alphaRegex.test(quoteText.author.slice(0,1)) ? true : quoteText.author = quoteText.author.slice(1,quoteText.author.length) 
+                alphaRegex.test(quoteText.author.slice(0,1)) ? true : quoteText.author = quoteText.author.slice(0,quoteText.author.length) 
                 quotes.push({
                     id: index,
                     quote: quoteText.specialQuote,
@@ -291,7 +292,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                             quote = rawQuote.slice(0, lastExclIndex+1)
                             author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
                         
-                        } else if (rawQuote.includes('?')) {
+                        } else if (rawQuote.includes('?') && !rawQuote.includes("'")) {
                             quote = rawQuote.slice(0, lastInterrIndex+1)
                             author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
                         } else if (rawQuote.includes("'")) {
@@ -316,7 +317,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                     specificQuotes.push({
                         id: index,
                         quote: quote,
-                        author: author
+                        author: authorName
                     })
                 })
                 displayQuotes(req,res,specQuoteID)

@@ -1,5 +1,6 @@
 import { driverName } from './types'
-
+import axios from 'axios'
+import { load } from 'cheerio'
 
 /**
  * Checks if the input is a correct driver name from the list of drivers in types.ts.
@@ -64,10 +65,7 @@ export const pagination = (pageN: number, specificQuotes: string | { id: number;
 export const includesSymbol = (rawQuote: string, specialQuote: string, author: string, top: boolean) => {
     const symbols = ['!', "'", '?']
     for (let i = 0; i < symbols.length; i++) {
-        if (rawQuote.includes(symbols[i]) && top === true) {
-            specialQuote = rawQuote.slice(0, rawQuote.lastIndexOf(symbols[i]))
-            author = rawQuote.slice(rawQuote.lastIndexOf(symbols[i]), rawQuote.length)
-        } else if (rawQuote.includes(symbols[i])){
+        if (rawQuote.includes(symbols[i]) && top) {
             specialQuote = rawQuote.slice(0, rawQuote.lastIndexOf(symbols[i])+1)
             author = rawQuote.slice(rawQuote.lastIndexOf(symbols[i])+1, rawQuote.length)
         }
