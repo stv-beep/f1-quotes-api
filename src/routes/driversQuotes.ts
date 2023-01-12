@@ -8,8 +8,8 @@ import { Request, Response } from 'express-serve-static-core'
 const router = express.Router()
 
 
-let quotes: Array<{ id: number, quote: string, author: string }> = Array()
-let specificQuotes: Array<{ id: number, quote: string, author: string }> = Array()
+export let quotes: Array<{ id: number, quote: string, author: string }> = Array()
+export let specificQuotes: Array<{ id: number, quote: string, author: string }> = Array()
 const quotesErrorMessage: string = 'Something went wrong or your input is not correct. Try "/quotes".'
 const driverQuotesErrorMsg: string = '` is not in the database or the input is incorrect.'
 const idNotFound: string = 'This driver doesn\'t have that number of quotes in the database. Try smaller numbers.'
