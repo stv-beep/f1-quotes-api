@@ -383,6 +383,11 @@ export const drivers = [
         name: 'Ross Brawn',
         address: 'https://www.quotetab.com/quotes/by-ross-brawn',
         driverId: 'brawn'
+    },
+    {
+        name: 'Helmut Marko',
+        address: 'https://www.quotes.net/authors/Helmut+Marko',
+        driverId: 'marko'
     }
 ]
 

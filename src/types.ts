@@ -36,6 +36,7 @@ export enum driverName {
     Kevin_Magnussen = 'magnussen',
     Pastor_Maldonado = 'maldonado',
     Nigel_Mansell = 'mansell',
+    Helmut_Marko = 'marko',
     Felipe_Massa = 'massa',
     Juan_Pablo_Montoya = 'montoya',
     Lando_Norris = 'norris',
