@@ -388,8 +388,13 @@ export const drivers = [
         name: 'Helmut Marko',
         address: 'https://www.quotes.net/authors/Helmut+Marko',
         driverId: 'marko'
+    },
+    {
+        name: 'Zhou Guanyu',
+        address: 'https://thesportsrush.com/f1-news-i-want-to-be-successful-guanyu-zhou-quotes-chinese-nba-player-as-an-inspiration-to-imprint-f1-culture-in-china/',
+        driverId: 'zhou'
     }
 ]
 
 export const top10 = 'https://www.brainyquote.com/lists/topics/top-10-f1-quotes'
-export const sites = ['brainyquote','quotes.net','azquotes', 'quotetab']
+export const sites = ['brainyquote','quotes.net','azquotes', 'quotetab', 'thesportsrush']

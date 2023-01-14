@@ -64,4 +64,5 @@ export enum driverName {
     Mark_Webber = 'webber',
     Susie_Wolff = 'susie-wolff',
     Toto_Wolff = 'toto-wolff',
+    Zhou_Guanyu = 'zhou'
 }

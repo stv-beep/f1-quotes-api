@@ -16,7 +16,7 @@ const idNotFound: string = 'This driver doesn\'t have that number of quotes in t
 const idTooSmall: string = 'This driver doesn\'t have that number of quotes in the database. Try positive numbers.'
 
 const quoteContent: string = '.quoteContent'
-const markupElements = ['.qb','blockquote','li div p a','blockquote']
+const markupElements = ['.qb','blockquote','li div p a','blockquote','.article-content']
 
 
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
@@ -378,6 +378,34 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                         author: authorName
                     })
                 })
+                displayQuotes(req,res,specQuoteID)
+
+            }).catch(err => console.log(err))
+        } else if (driverURL.includes(sites[4])) {
+            axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+                let formattedQuotes: any | RegExpMatchArray | null = []
+
+                $(markupElements[4]).each(function () {
+                    //bcs it's necessary to scrap all the page, I save the quoted phrases
+                    let rawQuote = $(this).text().replace(/“|”/g, '"')
+                    formattedQuotes = rawQuote.match(/".*/ig)
+                    index = -1 //setting to -1 because the first quote is not wanted
+                })
+                for (let i in formattedQuotes) {
+                    index++
+                    let q: any = []
+                    //the quotes have some symbols at the beginning and at the end
+                    q[i] = formattedQuotes[i].slice(1,formattedQuotes[i].length-1)
+                    specificQuotes.push({
+                        id: index,
+                        quote: q[i],
+                        author: authorName
+                    })
+                }
+                specificQuotes.shift() //the first quote is not wanted
                 displayQuotes(req,res,specQuoteID)
 
             }).catch(err => console.log(err))

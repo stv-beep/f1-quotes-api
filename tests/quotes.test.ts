@@ -50,6 +50,14 @@ describe('specific driver quotes', () => {
         const response = await api.get('/quotes/briatore')
         expect(response.body).toHaveLength(specificQuotes.length)
     })
+    test('Zhou quotes are returned (thesportsrush)', async () => {
+        await api
+        .get('/quotes/zhou')
+        .expect(200)
+        .expect('Content-Type',/application\/json/)
+        const response = await api.get('/quotes/zhou')
+        expect(response.body).toHaveLength(specificQuotes.length)
+    })
     
 })
 
