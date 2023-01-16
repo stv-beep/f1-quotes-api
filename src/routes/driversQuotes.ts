@@ -224,6 +224,34 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                 })
                 res.json(pagination(pageN, specificQuotes))
             }).catch(err => console.log(err))
+        
+        } else if (driverURL.includes(sites[4])) {
+            axios.get(driverURL)
+            .then(response => {
+                const html = response.data
+                const $ = load(html)
+                let formattedQuotes: any | RegExpMatchArray | null = []
+
+                $(markupElements[4]).each(function () {
+                    //bcs it's necessary to scrap all the page, I save the quoted phrases
+                    let rawQuote = $(this).text().replace(/“|”/g, '"')
+                    formattedQuotes = rawQuote.match(/".*/ig)
+                    index = -1 //setting to -1 because the first quote is not wanted
+                })
+                for (let i in formattedQuotes) {
+                    index++
+                    let q: any = []
+                    //the quotes have some symbols at the beginning and at the end
+                    q[i] = formattedQuotes[i].slice(1,formattedQuotes[i].length-1)
+                    specificQuotes.push({
+                        id: index,
+                        quote: q[i],
+                        author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                    })
+                }
+                specificQuotes.shift()
+                res.json(pagination(pageN, specificQuotes))
+            }).catch(err => console.log(err))
         }
 
     } else {
@@ -372,6 +400,10 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
                 $(markupElements[3]).each(function () {
                     index++
                     let rawQuote = cleanText($(this).text())
+                    //some quotes finnish with a comma for some reason
+                    if (rawQuote.slice(-1) == ',' && rawQuote.lastIndexOf(',') == rawQuote.length-1) {
+                        rawQuote = rawQuote.replace(/,$/, '.')
+                    }
                     specificQuotes.push({
                         id: index,
                         quote: rawQuote,
