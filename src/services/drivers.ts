@@ -393,6 +393,31 @@ export const drivers = [
         name: 'Zhou Guanyu',
         address: 'https://thesportsrush.com/f1-news-i-want-to-be-successful-guanyu-zhou-quotes-chinese-nba-player-as-an-inspiration-to-imprint-f1-culture-in-china/',
         driverId: 'zhou'
+    },
+    {
+        name: 'Jarno Trulli',
+        address: 'https://www.quotetab.com/quotes/by-jarno-trulli',
+        driverId: 'trulli'
+    },
+    {
+        name: 'Frank Williams',
+        address: 'https://www.quotetab.com/quotes/by-frank-williams',
+        driverId: 'williams'
+    },
+    {
+        name: 'Frank Williams',
+        address: 'https://www.quotes.net/authors/Frank+Williams',
+        driverId: 'williams'
+    },
+    {
+        name: 'Daniil Kvyat',
+        address: 'https://www.quotes.net/authors/Daniil+Kvyat',
+        driverId: 'kvyat'
+    },
+    {
+        name: 'Kamui Kobayashi',
+        address: 'https://www.quotes.net/authors/Kamui+Kobayashi',
+        driverId: 'kobayashi'
     }
 ]
 
