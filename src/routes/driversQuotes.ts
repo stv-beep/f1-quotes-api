@@ -16,7 +16,7 @@ const idNotFound: string = 'This driver doesn\'t have that number of quotes in t
 const idTooSmall: string = 'This driver doesn\'t have that number of quotes in the database. Try positive numbers.'
 
 const quoteContent: string = '.quoteContent'
-const markupElements = ['.qb','blockquote','li div p a','blockquote','.article-content']
+const markupElements = ['.b-qt','blockquote','li div p a','blockquote','.article-content']
 
 
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
@@ -89,7 +89,6 @@ router.get('/', (req, res) => { //quotes
 
 
 
-
 /* specific driver */
 router.get('/:driverId', (req, res) => { //quotes/:driverId
     specificDriver(req,res)
@@ -112,6 +111,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
     if (isDriver(driverId)) {
         
         const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
+        const author = drivers.filter(driver => driver.driverId === driverId)[0].name
         if (driverURL.includes(sites[0])) {
         axios.get(driverURL)
             .then(response => {
@@ -119,46 +119,15 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                 const $ = load(html)
                 specificQuotes = [] //cleaning array
                 
-                /* getting the quote div including the author, then slicing the quote and the author */
+                /* getting the quote div */
                 $(markupElements[0]).each(function () {
                     index++
-                    let rawQuote = cleanText($(this).text())
-                    let author = ''
-                    let quote = ''
-
-                    const lastDotIndex = rawQuote.lastIndexOf('.')
-                    const lastExclIndex = rawQuote.lastIndexOf('!')
-                    const lastInterrIndex = rawQuote.lastIndexOf('?')
-                    //if there's no '.' so probably last character is '!' or '?'
-                    if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
-
-                        if (rawQuote.includes('!')) {
-                            quote = rawQuote.slice(0, lastExclIndex+1)
-                            author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
-
-                        } else if (rawQuote.includes('?')) {
-                            quote = rawQuote.slice(0, lastInterrIndex+1)
-                            author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
-                        }
-                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
-
-                    } else {
-                        
-                        if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
-                            rawQuote = rawQuote.replace('Jr.', 'Jr')      
-                        } 
-
-                        author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                        rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                        quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-                        
-                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
-                        
-                    }
+                    let quote = cleanText($(this).text())
+                    
                     specificQuotes.push({
                         id: index,
-                        quote: quote,
-                        author: author
+                        quote,
+                        author
                     })
                 })
 
@@ -174,11 +143,11 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
 
                 $(markupElements[1]).each(function () {
                     index++
-                    let rawQuote = cleanText($(this).text())
+                    let quote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
-                        quote: rawQuote,
-                        author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                        quote,
+                        author
                     })
                     
                 })
@@ -194,11 +163,11 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
 
                 $(markupElements[2]).each(function () {
                     index++
-                    let rawQuote = cleanText($(this).text())
+                    let quote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
-                        quote: rawQuote,
-                        author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                        quote,
+                        author
                     })
                     
                 })
@@ -214,11 +183,11 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
 
                 $(markupElements[3]).each(function () {
                     index++
-                    let rawQuote = cleanText($(this).text())
+                    let quote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
-                        quote: rawQuote,
-                        author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                        quote,
+                        author
                     })
                     
                 })
@@ -246,7 +215,7 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
                     specificQuotes.push({
                         id: index,
                         quote: q[i],
-                        author: drivers.filter(driver => driver.driverId === driverId)[0].name
+                        author
                     })
                 }
                 specificQuotes.shift()
@@ -301,50 +270,14 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
             .then(response => {
                 const html = response.data
                 const $ = load(html)
-                let author = ''
-                let quote = ''
                         
-                /* getting the quote div including the author, then slicing the quote and the author */
+                /* getting the quote div */
                 $(markupElements[0]).each(function () {
                     index++
-                    let rawQuote = cleanText($(this).text())
-
-                    const lastDotIndex = rawQuote.lastIndexOf('.')
-                    const lastExclIndex = rawQuote.lastIndexOf('!')
-                    const lastInterrIndex = rawQuote.lastIndexOf('?')
-                    const lastApostropheIndex = rawQuote.lastIndexOf("'")
-                    //if there's no '.' so probably last character is '!' or '?'
-                    if (lastDotIndex === -1 || lastDotIndex < lastExclIndex || lastDotIndex < lastInterrIndex) {
-
-                        if (rawQuote.includes('!')) {
-                            quote = rawQuote.slice(0, lastExclIndex+1)
-                            author = rawQuote.slice(lastExclIndex+1, rawQuote.length)
-                        
-                        } else if (rawQuote.includes('?') && !rawQuote.includes("'")) {
-                            quote = rawQuote.slice(0, lastInterrIndex+1)
-                            author = rawQuote.slice(lastInterrIndex+1, rawQuote.length)
-                        } else if (rawQuote.includes("'")) {
-                            quote = rawQuote.slice(0, lastApostropheIndex+1)
-                            author = rawQuote.slice(lastApostropheIndex+1, rawQuote.length)
-                        }
-                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(2,author.length)
-
-                    } else {
-                        
-                        if (rawQuote.slice(rawQuote.length-3, rawQuote.length) === 'Jr.') {//if there's a '.' in author's name
-                            rawQuote = rawQuote.replace('Jr.', 'Jr')        
-                        }
-                        
-                        author = rawQuote.slice(rawQuote.lastIndexOf('.')+1, rawQuote.length)
-                        rawQuote.slice(0,1) === ' ' ? quote = rawQuote.slice(1, rawQuote.length-author.length) : 
-                        quote = rawQuote.slice(0, rawQuote.lastIndexOf('.')+1)
-                        
-                        alphaRegex.test(author.slice(0,1)) ? true : author = author.slice(1,author.length)
-                        
-                    }
+                    let quote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
-                        quote: quote,
+                        quote,
                         author: authorName
                     })
                 })
@@ -360,10 +293,10 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
 
                 $(markupElements[1]).each(function () {
                     index++
-                    let rawQuote = cleanText($(this).text())
+                    let quote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
-                        quote: rawQuote,
+                        quote,
                         author: authorName
                     })
                 })
@@ -380,10 +313,10 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
 
                 $(markupElements[2]).each(function () {
                     index++
-                    let rawQuote = cleanText($(this).text())
+                    let quote = cleanText($(this).text())
                     specificQuotes.push({
                         id: index,
-                        quote: rawQuote,
+                        quote,
                         author: authorName
                     })
                 })
