@@ -109,119 +109,69 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
     specificQuotes = [] //cleaning array
     let index = 0
     if (isDriver(driverId)) {
-        
         const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
         const author = drivers.filter(driver => driver.driverId === driverId)[0].name
-        if (driverURL.includes(sites[0])) {
-        axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-                specificQuotes = [] //cleaning array
-                
-                /* getting the quote div */
-                $(markupElements[0]).each(function () {
-                    index++
-                    let quote = cleanText($(this).text())
+
+        for (let w = 0; w < sites.length; w++) {
+
+            if (driverURL.includes(sites[w]) && w != 4) {
+                axios.get(driverURL)
+                .then(response => {
+                    const html = response.data
+                    const $ = load(html)
+                    if (w === 2) index = -1 //bcs i delete the first element
                     
-                    specificQuotes.push({
-                        id: index,
-                        quote,
-                        author
+                    //getting the quote div
+                    $(markupElements[w]).each(function () {
+                        index++
+                        let quote = cleanText($(this).text())
+                        //some quotes of db3 finnish with a comma for some reason
+                        if (quote.slice(-1) == ',' && quote.lastIndexOf(',') == quote.length-1) {
+                            quote = quote.replace(/,$/, '.')
+                        }
+                        specificQuotes.push({
+                            id: index,
+                            quote,
+                            author: author
+                        })
                     })
-                })
+                    if (w === 2) specificQuotes.shift()
+                    res.json(pagination(pageN, specificQuotes))
 
-                res.json(pagination(pageN, specificQuotes))
+                }).catch(err => console.log(err))
 
-            }).catch(err => console.log(err))
+            } else if (w === 4 && driverURL.includes(sites[4])) {
+                axios.get(driverURL)
+                .then(response => {
+                    const html = response.data
+                    const $ = load(html)
+                    let formattedQuotes: any | RegExpMatchArray | null = []
 
-        } else if (driverURL.includes(sites[1])) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-
-                $(markupElements[1]).each(function () {
-                    index++
-                    let quote = cleanText($(this).text())
-                    specificQuotes.push({
-                        id: index,
-                        quote,
-                        author
+                    $(markupElements[4]).each(function () {
+                        //bcs it's necessary to scrap all the page, I save the quoted phrases
+                        let rawQuote = $(this).text().replace(/“|”/g, '"')
+                        formattedQuotes = rawQuote.match(/".*/ig)
+                        index = -1 //setting to -1 because the first quote is not wanted
                     })
-                    
-                })
-                res.json(pagination(pageN, specificQuotes))
-            }).catch(err => console.log(err))
-            
-        } else if (driverURL.includes(sites[2])) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-                index = -1 //bcs i delete the first element
+                    for (let i in formattedQuotes) {
+                        index++
+                        let q: any = []
+                        //the quotes have some symbols at the beginning and at the end
+                        q[i] = formattedQuotes[i].slice(1,formattedQuotes[i].length-1)
+                        specificQuotes.push({
+                            id: index,
+                            quote: q[i],
+                            author: author
+                        })
+                    }
+                    specificQuotes.shift() //the first quote is not wanted
+                    res.json(pagination(pageN, specificQuotes))
 
-                $(markupElements[2]).each(function () {
-                    index++
-                    let quote = cleanText($(this).text())
-                    specificQuotes.push({
-                        id: index,
-                        quote,
-                        author
-                    })
-                    
-                })
-                specificQuotes.shift()
-                res.json(pagination(pageN, specificQuotes))
-            }).catch(err => console.log(err))
-
-        } else if (driverURL.includes(sites[3])) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-
-                $(markupElements[3]).each(function () {
-                    index++
-                    let quote = cleanText($(this).text())
-                    specificQuotes.push({
-                        id: index,
-                        quote,
-                        author
-                    })
-                    
-                })
-                res.json(pagination(pageN, specificQuotes))
-            }).catch(err => console.log(err))
-        
-        } else if (driverURL.includes(sites[4])) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-                let formattedQuotes: any | RegExpMatchArray | null = []
-
-                $(markupElements[4]).each(function () {
-                    //bcs it's necessary to scrap all the page, I save the quoted phrases
-                    let rawQuote = $(this).text().replace(/“|”/g, '"')
-                    formattedQuotes = rawQuote.match(/".*/ig)
-                    index = -1 //setting to -1 because the first quote is not wanted
-                })
-                for (let i in formattedQuotes) {
-                    index++
-                    let q: any = []
-                    //the quotes have some symbols at the beginning and at the end
-                    q[i] = formattedQuotes[i].slice(1,formattedQuotes[i].length-1)
-                    specificQuotes.push({
-                        id: index,
-                        quote: q[i],
-                        author
-                    })
-                }
-                specificQuotes.shift()
-                res.json(pagination(pageN, specificQuotes))
-            }).catch(err => console.log(err))
+                }).catch(err => console.log(err))
+            }
         }
+        
+    
 
     } else {
         res.json('`'+driverId + driverQuotesErrorMsg)
