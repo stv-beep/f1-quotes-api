@@ -265,115 +265,63 @@ const scrapQuotes = (driverURL: string, authorName: string, req:Request,
     res: Response<any, Record<string, any>, number>, specQuoteID: number, sites: Array<string>) => {
         let index = 0
 
-        if (driverURL.includes(sites[0])) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-                        
-                /* getting the quote div */
-                $(markupElements[0]).each(function () {
-                    index++
-                    let quote = cleanText($(this).text())
-                    specificQuotes.push({
-                        id: index,
-                        quote,
-                        author: authorName
-                    })
-                })
-                displayQuotes(req,res,specQuoteID)
-            
-            }).catch(err => console.log(err))
+        for (let w = 0; w < sites.length; w++) {
 
-        } else if (driverURL.includes(sites[1])) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-
-                $(markupElements[1]).each(function () {
-                    index++
-                    let quote = cleanText($(this).text())
-                    specificQuotes.push({
-                        id: index,
-                        quote,
-                        author: authorName
+            if (driverURL.includes(sites[w]) && w != 4) {
+                axios.get(driverURL)
+                .then(response => {
+                    const html = response.data
+                    const $ = load(html)
+                    if (w === 2) index = -1 //bcs i delete the first element
+                    
+                    //getting the quote div
+                    $(markupElements[w]).each(function () {
+                        index++
+                        let quote = cleanText($(this).text())
+                        //some quotes of db3 finnish with a comma for some reason
+                        if (quote.slice(-1) == ',' && quote.lastIndexOf(',') == quote.length-1) {
+                            quote = quote.replace(/,$/, '.')
+                        }
+                        specificQuotes.push({
+                            id: index,
+                            quote,
+                            author: authorName
+                        })
                     })
-                })
-                displayQuotes(req,res,specQuoteID)
+                    if (w === 2) specificQuotes.shift()
+                    displayQuotes(req,res,specQuoteID)
                 
-            }).catch(err => console.log(err))
-            
-        } else if (driverURL.includes(sites[2])) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-                index = -1 //bcs i delete the first element
+                }).catch(err => console.log(err))
 
-                $(markupElements[2]).each(function () {
-                    index++
-                    let quote = cleanText($(this).text())
-                    specificQuotes.push({
-                        id: index,
-                        quote,
-                        author: authorName
+            } else if (w === 4 && driverURL.includes(sites[4])) {
+                axios.get(driverURL)
+                .then(response => {
+                    const html = response.data
+                    const $ = load(html)
+                    let formattedQuotes: any | RegExpMatchArray | null = []
+
+                    $(markupElements[4]).each(function () {
+                        //bcs it's necessary to scrap all the page, I save the quoted phrases
+                        let rawQuote = $(this).text().replace(/“|”/g, '"')
+                        formattedQuotes = rawQuote.match(/".*/ig)
+                        index = -1 //setting to -1 because the first quote is not wanted
                     })
-                })
-                specificQuotes.shift()
-                displayQuotes(req,res,specQuoteID)
-
-            }).catch(err => console.log(err))
-        } else if (driverURL.includes(sites[3])) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-
-                $(markupElements[3]).each(function () {
-                    index++
-                    let rawQuote = cleanText($(this).text())
-                    //some quotes finnish with a comma for some reason
-                    if (rawQuote.slice(-1) == ',' && rawQuote.lastIndexOf(',') == rawQuote.length-1) {
-                        rawQuote = rawQuote.replace(/,$/, '.')
+                    for (let i in formattedQuotes) {
+                        index++
+                        let q: any = []
+                        //the quotes have some symbols at the beginning and at the end
+                        q[i] = formattedQuotes[i].slice(1,formattedQuotes[i].length-1)
+                        specificQuotes.push({
+                            id: index,
+                            quote: q[i],
+                            author: authorName
+                        })
                     }
-                    specificQuotes.push({
-                        id: index,
-                        quote: rawQuote,
-                        author: authorName
-                    })
-                })
-                displayQuotes(req,res,specQuoteID)
+                    specificQuotes.shift() //the first quote is not wanted
+                    displayQuotes(req,res,specQuoteID)
 
-            }).catch(err => console.log(err))
-        } else if (driverURL.includes(sites[4])) {
-            axios.get(driverURL)
-            .then(response => {
-                const html = response.data
-                const $ = load(html)
-                let formattedQuotes: any | RegExpMatchArray | null = []
-
-                $(markupElements[4]).each(function () {
-                    //bcs it's necessary to scrap all the page, I save the quoted phrases
-                    let rawQuote = $(this).text().replace(/“|”/g, '"')
-                    formattedQuotes = rawQuote.match(/".*/ig)
-                    index = -1 //setting to -1 because the first quote is not wanted
-                })
-                for (let i in formattedQuotes) {
-                    index++
-                    let q: any = []
-                    //the quotes have some symbols at the beginning and at the end
-                    q[i] = formattedQuotes[i].slice(1,formattedQuotes[i].length-1)
-                    specificQuotes.push({
-                        id: index,
-                        quote: q[i],
-                        author: authorName
-                    })
-                }
-                specificQuotes.shift() //the first quote is not wanted
-                displayQuotes(req,res,specQuoteID)
-
-            }).catch(err => console.log(err))
+                }).catch(err => console.log(err))
+            }
         }
 }
 
