@@ -418,6 +418,11 @@ export const drivers = [
         name: 'Kamui Kobayashi',
         address: 'https://www.quotes.net/authors/Kamui+Kobayashi',
         driverId: 'kobayashi'
+    },
+    {
+        name: 'Takuma Sato',
+        address: 'https://www.quotetab.com/quotes/by-takuma-sato',
+        driverId: 'sato'
     }
 ]
 
