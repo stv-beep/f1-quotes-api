@@ -33,7 +33,7 @@ export enum driverName {
     Robert_Kubica = 'kubica',
     Daniil_Kvyat = 'kvyat',
     Nicholas_Latifi = 'latifi',
-    Niki_Lauda = 'lauda', 
+    Niki_Lauda = 'lauda',
     Charles_Leclerc = 'leclerc',
     Kevin_Magnussen = 'magnussen',
     Pastor_Maldonado = 'maldonado',

@@ -22,34 +22,34 @@ export const isDriver = (param: any): boolean => {
  */
 export const pagination = (pageN: number, specificQuotes: string | { id: number; quote: string; author: string }[]) => {
     const pageSize = 10
-    const length = Math.ceil(specificQuotes.length/pageSize)
+    const length = Math.ceil(specificQuotes.length / pageSize)
 
     if (isNaN(pageN)) {
         return `Not valid data. Try a number.`
-    } 
-    
+    }
+
     if (pageN > 1 && pageN <= 6) {
         if (pageN === 2) {
-            if (specificQuotes.slice(pageSize, pageN*pageSize) == '') {
+            if (specificQuotes.slice(pageSize, pageN * pageSize) == '') {
                 return `This driver doesn\'t have that number of quotes in the database. Try ${length} page.`
             } else {
-                return specificQuotes.slice(pageSize, pageN*pageSize)
+                return specificQuotes.slice(pageSize, pageN * pageSize)
             }
         } else if (pageN >= 3) {
-            let size = (pageN -1)*10
-            if (specificQuotes.slice(size, pageN*pageSize) == '') {
+            let size = (pageN - 1) * 10
+            if (specificQuotes.slice(size, pageN * pageSize) == '') {
                 return `This driver doesn\'t have that number of quotes in the database. Try between 1-${length} pages.`
             } else {
-                return specificQuotes.slice(size, pageN*pageSize)
+                return specificQuotes.slice(size, pageN * pageSize)
             }
         }
     } else if (pageN < 1 || pageN > 6) {
 
-        return length == 1 ? `Number of pages not valid. Try 1 page.` : 
-        `Number of pages not valid. Try between 1-${length}.`
+        return length == 1 ? `Number of pages not valid. Try 1 page.` :
+            `Number of pages not valid. Try between 1-${length}.`
 
     } else {
-        return specificQuotes.slice(0, pageN*pageSize)
+        return specificQuotes.slice(0, pageN * pageSize)
     }
 }
 
@@ -66,11 +66,11 @@ export const includesSymbol = (rawQuote: string, specialQuote: string, author: s
     const symbols = ['!', "'", '?']
     for (let i = 0; i < symbols.length; i++) {
         if (rawQuote.includes(symbols[i]) && top) {
-            specialQuote = rawQuote.slice(0, rawQuote.lastIndexOf(symbols[i])+1)
-            author = rawQuote.slice(rawQuote.lastIndexOf(symbols[i])+1, rawQuote.length)
+            specialQuote = rawQuote.slice(0, rawQuote.lastIndexOf(symbols[i]) + 1)
+            author = rawQuote.slice(rawQuote.lastIndexOf(symbols[i]) + 1, rawQuote.length)
         }
     }
-    return {specialQuote,author}
+    return { specialQuote, author }
 }
 
 /**
@@ -79,6 +79,6 @@ export const includesSymbol = (rawQuote: string, specialQuote: string, author: s
  * @returns 
  */
 export const cleanText = (raw: string) =>
-	raw
-		.replace(/\t|\n|\s:/g, '')
-		.trim()
+    raw
+        .replace(/\t|\n|\s:/g, '')
+        .trim()
