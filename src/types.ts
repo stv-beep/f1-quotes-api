@@ -55,6 +55,7 @@ export enum driverName {
     Mick_Schumacher = 'mick-schumacher',
     Ralf_Schumacher = 'ralf-schumacher',
     Ayrton_Senna = 'senna',
+    Günther_Steiner = 'steiner',
     Jackie_Stewart = 'stewart',
     Lance_Stroll = 'stroll',
     John_Surtees = 'surtees',

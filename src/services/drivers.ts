@@ -423,6 +423,10 @@ export const drivers = [
         name: 'Takuma Sato',
         address: 'https://www.quotetab.com/quotes/by-takuma-sato',
         driverId: 'sato'
+    },
+    {   name: 'Günther Steiner',
+        address: 'https://www.brainyquote.com/authors/guenther-steiner-quotes',
+        driverId: 'steiner'
     }
 ]
 
