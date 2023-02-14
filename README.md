@@ -23,7 +23,7 @@
 /quotes
 ```
 
-#### GET list of F1 drivers or personalities with they photos
+#### GET list of F1 drivers or personalities with their photos
 ```
 /authors
 ```
