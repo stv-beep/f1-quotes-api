@@ -1,7 +1,7 @@
 import express from 'express'
 import axios from 'axios'
 import { load } from 'cheerio'
-import { drivers, top10, sites } from '../services/drivers'
+import { drivers, top10, sites } from '../services/quotes'
 import { isDriver, pagination, includesSymbol, cleanText } from '../utils'
 import { Request, Response } from 'express-serve-static-core'
 
@@ -86,7 +86,6 @@ router.get('/', (req, res) => { //quotes
         ? res.send(quotes)
         : res.json(quotesErrorMessage)
 })
-
 
 
 /* specific driver */

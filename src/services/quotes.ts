@@ -427,6 +427,16 @@ export const drivers = [
     {   name: 'Günther Steiner',
         address: 'https://www.brainyquote.com/authors/guenther-steiner-quotes',
         driverId: 'steiner'
+    },
+    {
+        name: 'Giancarlo Fisichella',
+        address: 'https://www.quotetab.com/quotes/by-giancarlo-fisichella',
+        driverId: 'fisichella'
+    },
+    {
+        name: 'Nikita Mazepin',
+        address: 'https://www.quotes.net/authors/Nikita+Mazepin',
+        driverId: 'mazepin'
     }
 ]
 

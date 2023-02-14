@@ -1,7 +1,7 @@
 import { app, server } from '../src/index'
 import { describe, expect, test } from '@jest/globals';
 import supertest from 'supertest';
-import { quotes, specificQuotes } from '../src/routes/driversQuotes'
+import { quotes, specificQuotes } from '../src/routes/routes'
 
 const api = supertest(app)
 

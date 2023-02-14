@@ -1,6 +1,7 @@
 import express from 'express'
-import quotesRouter from './routes/driversQuotes'
+import quotesRouter from './routes/routes'
 import { driverName } from './types'
+import { authors } from './services/authors'
 
 const PORT = process.env.PORT || 3000
 
@@ -9,6 +10,10 @@ app.use(express.json())
 
 app.get('/', (_req, res) => {
     res.status(200).json(driverName)
+})
+
+app.get('/authors', (_req, res) => {
+    res.status(200).json(authors)
 })
 
 app.use('/quotes', quotesRouter)
