@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
-    "start": "node build/index.js",
+    "start": "node build/src/index.js",
     "tsc": "tsc",
     "test": "npm run tsc && jest --verbose --silent tests/quotes.test.ts",
     "test:watch": "npm run test -- --watch"

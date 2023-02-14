@@ -2,7 +2,7 @@
 <h1>🏎 Formula 1 quotes API 🏎</h1>
 
 <p>
-<img alt="Version" src="https://img.shields.io/badge/version-0.6.15-greenyellow.svg"/>
+<img alt="Version" src="https://img.shields.io/badge/version-0.7.0-greenyellow.svg"/>
 <img src="https://img.shields.io/badge/npm-%3E%3D8.5.0-blue.svg"/>
 <img src="https://img.shields.io/badge/node-%3E%3D16.14.2-blue.svg"/>
 </p>
@@ -14,15 +14,30 @@
 
 ## Endpoints
 
-#### GET list of F1 drivers or personalities **->** GET ```/```
+#### GET list of F1 drivers or personalities
+```
+/
+```
 
-#### GET 10 interesting quotes of F1 drivers or personalities **->** GET ```/quotes```
+#### GET 10 interesting quotes of F1 drivers or personalities
+```
+/quotes
+```
 
-#### GET all saved quotes from a specific F1 driver **->** GET ```/quotes/:drivers_last_name```
+#### GET all saved quotes from a specific F1 driver
+```
+/quotes/:drivers_last_name
+```
 
-#### GET a specific quote from a specific F1 driver **->** GET ```/quotes/:drivers_last_name/:quote_id```
+#### GET a specific quote from a specific F1 driver 
+```
+/quotes/:drivers_last_name/:quote_id
+```
 
-#### GET 10 quotes in each page of a specific F1 driver **->** GET ```/quotes/:drivers_last_name/p/:page```
+#### GET 10 quotes in each page of a specific F1 driver
+```
+/quotes/:drivers_last_name/p/:page
+```
   
 
 ## Development setup
