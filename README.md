@@ -13,8 +13,7 @@
 ##### Very easy to use. GET ```/``` shows all the F1 drivers or personalities who have quotes saved in this API, and their code to access them. For example: Max Verstappen's quotes: ```/quotes/verstappen```. Please, realize that there are people with the same last name, so you will have to write the name-last name. Example: `/quotes/michael-schumacher` and `/quotes/mick-schumacher`.
 
 ## Endpoints
-
-#### GET list of F1 drivers or personalities
+#### GET list of F1 drivers or personalities with the available author endpoints
 ```
 /
 ```
@@ -22,6 +21,11 @@
 #### GET 10 interesting quotes of F1 drivers or personalities
 ```
 /quotes
+```
+
+#### GET list of F1 drivers or personalities with they photos
+```
+/authors
 ```
 
 #### GET all saved quotes from a specific F1 driver
