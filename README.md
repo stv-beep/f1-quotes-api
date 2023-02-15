@@ -28,6 +28,11 @@
 /authors
 ```
 
+#### GET F1 driver or personality with his photo
+```
+/authors/:authors_last_name
+```
+
 #### GET all saved quotes from a specific F1 driver
 ```
 /quotes/:drivers_last_name
