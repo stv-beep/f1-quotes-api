@@ -1,6 +1,8 @@
 import { driverName } from './types'
 import axios from 'axios'
 import { load } from 'cheerio'
+import { authors } from './services/authors'
+import { Response } from 'express-serve-static-core'
 
 /**
  * Checks if the input is a correct driver name from the list of drivers in types.ts.
@@ -82,3 +84,18 @@ export const cleanText = (raw: string) =>
     raw
         .replace(/\t|\n|\s:/g, '')
         .trim()
+
+/**
+ * Gets the author info
+ * @param req 
+ * @param res 
+ */
+export const getAuthor = (req: { params: { driverId: any } }, res: Response<any, Record<string, any>, number>) => {
+    const driverId = req.params.driverId
+    if (isDriver(driverId)) {
+        const author = authors.filter(author => author.id === driverId)
+        res.status(200).json(author)
+    } else {
+        res.json('No author with this ID.')
+    }
+}
