@@ -16,74 +16,16 @@ const idNotFound: string = 'This driver doesn\'t have that number of quotes in t
 const idTooSmall: string = 'This driver doesn\'t have that number of quotes in the database. Try positive numbers.'
 
 const quoteContent: string = '.quoteContent'
-const markupElements = ['.b-qt', 'blockquote', 'li div p a', 'blockquote', '.article-content']
+const markupElements = ['.b-qt', 'blockquote', 'li div p a', 'blockquote', '.article-content', 'div.sc-fotOHu.zwJMw p']
 
 
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
 
 
 /* top quotes */
-axios.get(top10)
-    .then(response => {
-        const html = response.data
-        const $ = load(html)
-        quotes = [] //cleaning array
-        let index = 0
-        /* getting the quote div including the author, then slicing the quote and the author */
-        $(quoteContent).each(function () {
-            index++
-            const lastDotIndex = $(this).text().lastIndexOf('.')
-            const lastExclIndex = $(this).text().lastIndexOf('!')
-            const lastInterrIndex = $(this).text().lastIndexOf('?')
-            const lastApostropheIndex = $(this).text().lastIndexOf("'")
-            let rawQuote = cleanText($(this).text())
-            let author = ''
-            let specialQuote = ''
-
-            if ($(this).text().slice(lastDotIndex - 2, lastDotIndex) === 'Jr') {//if there's a '.' in author's name
-                rawQuote = $(this).text().replace('Jr.', 'Jr')
-                const lastDotIndex = rawQuote.lastIndexOf('.')
-                const quote = rawQuote.replace(/\n/g, '').slice(0, lastDotIndex - 1)
-                const author = rawQuote.slice(lastDotIndex + 1).replace(/\n/g, '')
-                specialQuote = cleanText(quote.slice(0, quote.lastIndexOf('.') + 1)) //quote with an image
-                quotes.push({
-                    id: index,
-                    quote: specialQuote,
-                    author: author
-                })
-                //if the quote does not finish with '.' and finishes with other symbol
-            } else if (lastDotIndex === -1 || lastDotIndex < lastApostropheIndex || lastDotIndex < lastExclIndex
-                || lastDotIndex < lastInterrIndex) {
-
-                let quoteText = includesSymbol(rawQuote, specialQuote, author, true)
-                alphaRegex.test(quoteText.author.slice(0, 1)) ? true : quoteText.author = quoteText.author.slice(0, quoteText.author.length)
-                quotes.push({
-                    id: index,
-                    quote: quoteText.specialQuote,
-                    author: quoteText.author
-                })
-
-            } else {
-                const quote = $(this).text().replace(/\n/g, '').slice(0, lastDotIndex - 1)
-                const author = $(this).text().slice(lastDotIndex + 1).replace(/\n/g, '')
-                const specialQuote = quote.slice(1, quote.lastIndexOf('.') + 1) //quote with an image
-                quote.slice(-1) === '.' || quote.slice(-1) === '!' || quote.slice(-1) === '?' ?
-                    quotes.push({
-                        id: index,
-                        quote,
-                        author: author
-                    }) :
-                    quotes.push({
-                        id: index,
-                        quote: specialQuote,
-                        author: author
-                    })
-            }
-        })
-    }).catch(err => console.log(err))
 router.get('/', (req, res) => { //quotes
     return (quotes != null || res.status(200))
-        ? res.send(quotes)
+        ? res.send(top10)
         : res.json(quotesErrorMessage)
 })
 
@@ -213,7 +155,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req: Request,
 
     for (let w = 0; w < sites.length; w++) {
 
-        if (driverURL.includes(sites[w]) && w != 4) {
+        if (driverURL.includes(sites[w]) && w != 4 && w != 5) {
             axios.get(driverURL)
                 .then(response => {
                     const html = response.data
@@ -264,6 +206,27 @@ const scrapQuotes = (driverURL: string, authorName: string, req: Request,
                         })
                     }
                     specificQuotes.shift() //the first quote is not wanted
+                    displayQuotes(req, res, specQuoteID)
+
+                }).catch(err => console.log(err))
+
+        } else if (w === 5 && driverURL.includes(sites[5])) {//takequotes.org
+            axios.get(driverURL)
+                .then(response => {
+                    const html = response.data
+                    const $ = load(html)
+                    //getting the quote div
+                    $(markupElements[w]).each(function () {
+                        index++
+                        //filtering the quote
+                        let quote = $(this).contents().filter((i, el) => el.nodeType === 3).text().trim();
+
+                        specificQuotes.push({
+                            id: index,
+                            quote,
+                            author: authorName
+                        })
+                    })
                     displayQuotes(req, res, specQuoteID)
 
                 }).catch(err => console.log(err))

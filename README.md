@@ -2,7 +2,7 @@
 <h1>🏎 Formula 1 quotes API 🏎</h1>
 
 <p>
-<img alt="Version" src="https://img.shields.io/badge/version-0.7.0-greenyellow.svg"/>
+<img alt="Version" src="https://img.shields.io/badge/version-0.7.1-greenyellow.svg"/>
 <img src="https://img.shields.io/badge/npm-%3E%3D8.5.0-blue.svg"/>
 <img src="https://img.shields.io/badge/node-%3E%3D16.14.2-blue.svg"/>
 </p>
@@ -47,7 +47,6 @@
 ```
 /quotes/:drivers_last_name/p/:page
 ```
-  
 
 ## Development setup
 `npm install`
@@ -55,6 +54,8 @@
 `npm run tsc`
 
 `npm run dev`
+
+Open [http://localhost:3000](http://localhost:3000/) with your browser to see the API.
 
 ## Testing
 `npm run test`
