@@ -16,7 +16,7 @@ const idNotFound: string = 'This driver doesn\'t have that number of quotes in t
 const idTooSmall: string = 'This driver doesn\'t have that number of quotes in the database. Try positive numbers.'
 
 const quoteContent: string = '.quoteContent'
-const markupElements = ['.b-qt', 'blockquote', 'li div p a', 'blockquote', '.article-content', 'div.sc-fotOHu.zwJMw p']
+const markupElements = ['.b-qt', 'blockquote', 'li div p a', 'blockquote', 'blockquote.data-event > p > em', 'div.sc-fotOHu.zwJMw p']
 
 
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
@@ -83,29 +83,47 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
 
             } else if (w === 4 && driverURL.includes(sites[4])) {
                 axios.get(driverURL)
-                    .then(response => {
+                .then(response => {
                         const html = response.data
                         const $ = load(html)
                         let formattedQuotes: any | RegExpMatchArray | null = []
 
+                        // VERSION 1
                         $(markupElements[4]).each(function () {
-                            //bcs it's necessary to scrap all the page, I save the quoted phrases
-                            let rawQuote = $(this).text().replace(/“|”/g, '"')
-                            formattedQuotes = rawQuote.match(/".*/ig)
-                            index = -1 //setting to -1 because the first quote is not wanted
-                        })
-                        for (let i in formattedQuotes) {
                             index++
-                            let q: any = []
-                            //the quotes have some symbols at the beginning and at the end
-                            q[i] = formattedQuotes[i].slice(1, formattedQuotes[i].length - 1)
+                            let rawQuote = $(this).text().replace(/“|”/g, '')
+
                             specificQuotes.push({
                                 id: index,
-                                quote: q[i],
+                                quote: rawQuote,
                                 author: author
                             })
+
+                        })
+
+                        //VERSION 2
+                        if (specificQuotes.length == 0) { //no blockquote
+
+                            $('#article-content').each(function () {
+                                //bcs it's necessary to scrap all the page, I save the quoted phrases
+                                let rawQuote = $(this).text().replace(/“|”/g, '"')
+                                formattedQuotes = rawQuote.match(/".*/ig)
+
+                            })
+                            for (let i in formattedQuotes) {
+                                index++
+                                let q: any = []
+                                //the quotes have some symbols at the beginning and at the end
+                                q[i] = formattedQuotes[i].slice(1, formattedQuotes[i].length - 1)
+                                specificQuotes.push({
+                                    id: index,
+                                    quote: q[i],
+                                    author: author
+                                })
+                            }
+
                         }
-                        specificQuotes.shift() //the first quote is not wanted
+                    
                         res.json(pagination(pageN, specificQuotes))
 
                     }).catch(err => console.log(err))
@@ -181,31 +199,50 @@ const scrapQuotes = (driverURL: string, authorName: string, req: Request,
 
                 }).catch(err => console.log(err))
 
-        } else if (w === 4 && driverURL.includes(sites[4])) {
+        } else if (w === 4 && driverURL.includes(sites[4])) { //sportsrush
             axios.get(driverURL)
                 .then(response => {
                     const html = response.data
                     const $ = load(html)
                     let formattedQuotes: any | RegExpMatchArray | null = []
 
+                    // VERSION 1
                     $(markupElements[4]).each(function () {
-                        //bcs it's necessary to scrap all the page, I save the quoted phrases
-                        let rawQuote = $(this).text().replace(/“|”/g, '"')
-                        formattedQuotes = rawQuote.match(/".*/ig)
-                        index = -1 //setting to -1 because the first quote is not wanted
-                    })
-                    for (let i in formattedQuotes) {
                         index++
-                        let q: any = []
-                        //the quotes have some symbols at the beginning and at the end
-                        q[i] = formattedQuotes[i].slice(1, formattedQuotes[i].length - 1)
+                        let rawQuote = $(this).text().replace(/“|”/g, '')
+
                         specificQuotes.push({
                             id: index,
-                            quote: q[i],
+                            quote: rawQuote,
                             author: authorName
                         })
+
+
+                    })
+
+                    //VERSION 2
+                    if (specificQuotes.length == 0) { //no blockquote
+
+                        $('#article-content').each(function () {
+                            //bcs it's necessary to scrap all the page, I save the quoted phrases
+                            let rawQuote = $(this).text().replace(/“|”/g, '"')
+                            formattedQuotes = rawQuote.match(/".*/ig)
+
+                        })
+                        for (let i in formattedQuotes) {
+                            index++
+                            let q: any = []
+                            //the quotes have some symbols at the beginning and at the end
+                            q[i] = formattedQuotes[i].slice(1, formattedQuotes[i].length - 1)
+                            specificQuotes.push({
+                                id: index,
+                                quote: q[i],
+                                author: authorName
+                            })
+                        }
+
                     }
-                    specificQuotes.shift() //the first quote is not wanted
+                    
                     displayQuotes(req, res, specQuoteID)
 
                 }).catch(err => console.log(err))
