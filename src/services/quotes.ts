@@ -39,11 +39,11 @@ export const drivers = [
         address: 'https://www.azquotes.com/author/15073-Sebastian_Vettel',
         driverId: 'vettel'
     },
-    /* {
+    {
         name: 'Mick Schumacher',
-        address: '',
+        address: 'https://thesportsrush.com/f1-news-mick-schumacher-follows-his-fathers-footsteps-but-prepares-to-outdo-him-in-le-mans/',
         driverId: 'mick-schumacher'
-    }, */
+    },
     {
         name: 'Sergio Perez',
         address: 'https://www.azquotes.com/author/75126-Sergio_Perez',
@@ -239,11 +239,11 @@ export const drivers = [
         address: 'https://www.azquotes.com/author/19653-Jean_Alesi',
         driverId: 'alesi'
     },
-    /* {
+    {
         name: 'Jos Verstappen',
-        address: '',
+        address: 'https://thesportsrush.com/f1-news-max-verstappens-booming-success-has-jos-doubting-his-own-f1-career/',
         driverId: 'jos-verstappen'
-    }, */
+    },
     {
         name: 'Mario Andretti',
         address: 'https://www.azquotes.com/author/421-Mario_Andretti',
@@ -377,6 +377,11 @@ export const drivers = [
         name: 'Nikita Mazepin',
         address: 'https://www.quotes.net/authors/Nikita+Mazepin',
         driverId: 'mazepin'
+    },
+    {
+        name: 'Oscar Piastri',
+        address: 'https://thesportsrush.com/f1-news-oscar-piastri-explains-why-he-will-not-extend-daniel-ricciardos-shoey-legacy/',
+        driverId: 'piastri'
     }
 ]
 
