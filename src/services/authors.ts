@@ -1,6 +1,6 @@
 export const authors = [
     { name: "Alexander Albon", img: "https://f1worldwide.com/wp-content/uploads/2023/03/alex-albon.webp", id: "albon" },
-    { name: "Jean Alesi", img: "", id: "alesi" },
+    { name: "Jean Alesi", img: "https://www.f1-photo.com/Ressources/Gallery/1994/Monaco/Alesi_1994_Monaco_02_PHC.jpg", id: "alesi" },
     { name: "Fernando Alonso", img: "https://www.20minutos.es/uploads/imagenes/2022/08/10/los-hombres-de-fernando-alonso-para-aston-martin.jpeg", id: "alonso" },
     { name: "Mario Andretti", img: "", id: "andretti" },
     { name: "Alberto Ascari", img: "", id: "ascari" },
