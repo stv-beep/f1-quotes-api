@@ -2,7 +2,7 @@
 <h1>🏎 Formula 1 quotes API 🏎</h1>
 
 <p>
-<img alt="Version" src="https://img.shields.io/badge/version-0.7.3-greenyellow.svg"/>
+<img alt="Version" src="https://img.shields.io/badge/version-0.8.0-greenyellow.svg"/>
 <img src="https://img.shields.io/badge/npm-%3E%3D8.5.0-blue.svg"/>
 <img src="https://img.shields.io/badge/node-%3E%3D16.14.2-blue.svg"/>
 </p>
