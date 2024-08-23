@@ -16,6 +16,7 @@ export const authors = [
     { name: "Bernie Ecclestone", img: "https://www.f1-photo.com/Ressources/Gallery/2002/Germany/Ecclestone_2002_Germany_06_PHC.jpg", id: "ecclestone" },
     { name: "Marcus Ericsson", img: "https://static.wikia.nocookie.net/f1wikia/images/0/06/Marcus_Ericsson_Sauber.jpg", id: "ericsson" },
     { name: "Juan Manuel Fangio", img: "https://static.wikia.nocookie.net/f1wikia/images/8/89/93.jpg", id: "fangio" },
+    { name: "Enzo Ferrari", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Enzo_Ferrari_-_Wheel_of_a_racing_car.jpg/220px-Enzo_Ferrari_-_Wheel_of_a_racing_car.jpg", id: "ferrari"},
     { name: "Giancarlo Fisichella", img: "https://www.f1-photo.com/Ressources/Gallery/2002/Malaysia/Fisichella_2002_Malaysia_01_PHC.jpg", id: "fisichella" },
     { name: "Emerson Fittipaldi", img: "https://www.f1-photo.com/Ressources/Gallery/1974/Italy/Fittipaldi_1974_Italy_01_BC.jpg", id: "fittipaldi" },
     { name: "Pierre Gasly", img: "https://www.pierregasly.com/modules/higallery/views/img/upload/original/1690897318_as2.jpg", id: "gasly" },
