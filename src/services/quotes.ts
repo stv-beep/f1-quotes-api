@@ -382,48 +382,51 @@ export const drivers = [
         name: 'Oscar Piastri',
         address: 'https://thesportsrush.com/f1-news-oscar-piastri-explains-why-he-will-not-extend-daniel-ricciardos-shoey-legacy/',
         driverId: 'piastri'
+    },
+    {
+        name: 'Enzo Ferrari',
+        address: 'https://www.azquotes.com/author/4758-Enzo_Ferrari',
+        driverId: 'ferrari'
     }
 ]
-
-//export const top10 = 'https://www.brainyquote.com/lists/topics/top-10-f1-quotes'
 export const sites = ['brainyquote', 'quotes.net', 'azquotes', 'quotetab', 'thesportsrush', 'takequotes.com']
 
 
-export const top10 = [
+export const topic = [
     {
         id: 1,
-        quote: "I think the people that need to see my talent are seeing it, people who understand F1 well are valuing my performance.",
-        author: "Carlos Sainz Jr"
+        quote: "Aerodynamics are for people who can't build engines.",
+        author: "Enzo Ferrari"
     },
     {
         id: 2,
-        quote: "Since I got to F1, and especially since I got to Red Bull Racing, I said, 'I don't want to have any regrets. I've got a chance now in a top team. I want to leave it all on the table.'",
-        author: "Daniel Ricciardo"
+        quote: "If you no longer go for a gap that exists, you\'re no longer a racing driver.",
+        author: "Ayrton Senna"
     },
     {
         id: 3,
-        quote: "F1 is about the best drivers competing against each other for the best teams producing the best cars they can.",
-        author: "Lewis Hamilton"
+        quote: "In the end, I think in F1 it is very hard for a girl.",
+        author: "Max Verstappen"
     },
     {
         id: 4,
-        quote: "It's true that Ferrari and Monaco are the two most important things to F1.",
-        author: "Albert II, Prince of Monaco"
+        quote: "I\'ve always believed that you should never, ever give up and you should always keep fighting even when there\'s only a slightest chance.",
+        author: "Michael Schumacher"
     },
     {
         id: 5,
-        quote: "F1 always feels unreal until you arrive and get your first seat.",
-        author: "Charles Leclerc"
+        quote: "Just leave me alone, I know what to do.",
+        author: "Kimi Räikkönen"
     },
     {
         id: 6,
-        quote: "To drive an F1 car you have to be a little mad. On the morning of a race there's a mix of excitement and fear. If it's a wet track, then it's worse as you're not in control most of the time, which is the thing all drivers fear the most.",
-        author: "Jenson Button"
+        quote: "You don\'t expect to be at the top of the mountain the day you start climbing.",
+        author: "Ron Dennis"
     },
     {
         id: 7,
-        quote: "F1 is a team sport, not an individual sport.",
-        author: "Lance Stroll"
+        quote: "All the time you have to leave a space!",
+        author: "Fernando Alonso"
     },
     {
         id: 8,
@@ -432,12 +435,37 @@ export const top10 = [
     },
     {
         id: 9,
-        quote: "I don't care what other people think as long as I am happy. The day I die or retire, I have blown all my chances because I don't have the chance any more to change my image as an F1 driver.",
+        quote: "I remember my first test in F1. After five laps, I came back to the pits and tried to play it cool - 'Oh yeah, I'm fine, I'm on top of this' - but I was completely lost.",
         author: "Sebastian Vettel"
     },
     {
         id: 10,
-        quote: "In the end, I think in F1 it is very hard for a girl.",
-        author: "Max Verstappen"
+        quote: "Sir Stirling Moss, who said that women don't have the mental aptitude to take part in F1, is from a different generation. There's no reason why women can't rise to the top in F1. If you're not good enough you don't survive.",
+        author: "Susie Wolff"
     },
+    {
+        id: 11,
+        quote: "I was impressed by the braking power an F1 car has.",
+        author: "Mick Schumacher"
+    },
+    {
+        id: 12,
+        quote: "Patience is a virtue in life, of course, but it's not something we F1 people have too much of.",
+        author: "Niki Lauda"
+    },
+    {
+        id: 13,
+        quote: "I am an artist. The track is my canvas and my car is my brush.",
+        author: "Graham Hill"
+    },
+    {
+        id: 14,
+        quote: "I was having a shit.",
+        author: "Kimi Räikkönen"
+    },
+    {
+        id: 15,
+        quote: "We win and lose together.",
+        author: "Lewis Hamilton"
+    }
 ]

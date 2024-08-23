@@ -1,7 +1,7 @@
 import express from 'express'
 import axios from 'axios'
 import { load } from 'cheerio'
-import { drivers, top10, sites } from '../services/quotes'
+import { drivers, topic, sites } from '../services/quotes'
 import { isDriver, pagination, includesSymbol, cleanText } from '../utils'
 import { Request, Response } from 'express-serve-static-core'
 
@@ -25,7 +25,7 @@ const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
 /* top quotes */
 router.get('/', (req, res) => { //quotes
     return (quotes != null || res.status(200))
-        ? res.send(top10)
+        ? res.send(topic)
         : res.json(quotesErrorMessage)
 })
 
