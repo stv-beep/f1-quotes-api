@@ -31,7 +31,8 @@ export const drivers = [
     },
     {
         name: 'Charles Leclerc',
-        address: 'https://takequotes.com/en/author/charlesleclerc',
+        //address: 'https://takequotes.com/en/author/charlesleclerc',
+        address: 'https://www.quoteforever.com/author/charles-leclerc?page=1',
         driverId: 'leclerc'
     },
     {
@@ -389,7 +390,7 @@ export const drivers = [
         driverId: 'ferrari'
     }
 ]
-export const sites = ['brainyquote', 'quotes.net', 'azquotes', 'quotetab', 'thesportsrush', 'takequotes.com']
+export const sites = ['brainyquote', 'quotes.net', 'azquotes', 'quotetab', 'thesportsrush', 'quoteforever.com']
 
 
 export const topic = [

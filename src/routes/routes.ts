@@ -16,7 +16,7 @@ const idNotFound: string = 'This driver doesn\'t have that number of quotes in t
 const idTooSmall: string = 'This driver doesn\'t have that number of quotes in the database. Try positive numbers.'
 
 const quoteContent: string = '.quoteContent'
-const markupElements = ['.b-qt', 'blockquote', 'li div p a', 'blockquote', 'blockquote.data-event > p > em', 'div.sc-fotOHu.zwJMw p']
+const markupElements = ['.b-qt', 'blockquote', 'li div p a', 'blockquote', 'blockquote.data-event > p > em', '.iso-call p a']
 
 
 const alphaRegex = new RegExp(/^[a-zA-Z]*$/)
@@ -247,7 +247,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req: Request,
 
                 }).catch(err => console.log(err))
 
-        } else if (w === 5 && driverURL.includes(sites[5])) {//takequotes.org
+        } else if (w === 5 && driverURL.includes(sites[5])) {//quotesforever.com
             axios.get(driverURL)
                 .then(response => {
                     const html = response.data
@@ -255,8 +255,7 @@ const scrapQuotes = (driverURL: string, authorName: string, req: Request,
                     //getting the quote div
                     $(markupElements[w]).each(function () {
                         index++
-                        //filtering the quote
-                        let quote = $(this).contents().filter((i, el) => el.nodeType === 3).text().trim();
+                        let quote = $(this).text().trim()
 
                         specificQuotes.push({
                             id: index,
