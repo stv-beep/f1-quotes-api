@@ -1,5 +1,5 @@
 export const authors = [
-    { name: "Alexander Albon", img: "https://f1worldwide.com/wp-content/uploads/2023/03/alex-albon.webp", id: "albon" },
+    { name: "Alexander Albon", img: "https://gpticketstore.vshcdn.net/uploads/images/172/f1-alexander-albon-williams-f1austria-f1spa-f1hungaroring-f1france-f1barcelona-f1italy-f1imola-f1silverstone-f1zandvoort.jpg", id: "albon" },
     { name: "Jean Alesi", img: "https://www.f1-photo.com/Ressources/Gallery/1994/Monaco/Alesi_1994_Monaco_02_PHC.jpg", id: "alesi" },
     { name: "Fernando Alonso", img: "https://www.20minutos.es/uploads/imagenes/2022/08/10/los-hombres-de-fernando-alonso-para-aston-martin.jpeg", id: "alonso" },
     { name: "Mario Andretti", img: "https://www.f1-photo.com/Ressources/Gallery/1978/Holland/Andretti_1978_Holland_01_BC.jpg", id: "andretti" },
