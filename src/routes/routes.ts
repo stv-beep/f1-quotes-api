@@ -53,80 +53,94 @@ router.get('/:driverId/p/:page', (req, res) => { //quotes/verstappen/p/1
         const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
         const author = drivers.filter(driver => driver.driverId === driverId)[0].name
 
-        for (let w = 0; w < sites.length; w++) {
+        //driver local quotes
+        if (driverURL == '' || driverURL == undefined) {
 
-            if (driverURL.includes(sites[w]) && w != 4) {
-                axios.get(driverURL)
-                    .then(response => {
-                        const html = response.data
-                        const $ = load(html)
-                        if (w === 2) index = -1 //bcs i delete the first element
+            const localDriver = drivers.find(driver => driver.driverId === driverId);//search driverId
 
-                        //getting the quote div
-                        $(markupElements[w]).each(function () {
-                            index++
-                            let quote = cleanText($(this).text())
-                            //some quotes of db3 finnish with a comma for some reason
-                            if (quote.slice(-1) == ',' && quote.lastIndexOf(',') == quote.length - 1) {
-                                quote = quote.replace(/,$/, '.')
-                            }
-                            specificQuotes.push({
-                                id: index,
-                                quote,
-                                author: author
-                            })
-                        })
-                        if (w === 2) specificQuotes.shift()
-                        res.json(pagination(pageN, specificQuotes))
+            if (localDriver && 'quotes' in localDriver && Array.isArray(localDriver.quotes)) {//author found, has quotes and array
+                const allQuotes = localDriver.quotes
+                res.json(pagination(pageN, allQuotes))
+            }
 
-                    }).catch(err => console.log(err))
+        //driver scrap quotes
+        } else {
 
-            } else if (w === 4 && driverURL.includes(sites[4])) {
-                axios.get(driverURL)
-                .then(response => {
-                        const html = response.data
-                        const $ = load(html)
-                        let formattedQuotes: any | RegExpMatchArray | null = []
+            for (let w = 0; w < sites.length; w++) {
 
-                        // VERSION 1
-                        $(markupElements[4]).each(function () {
-                            index++
-                            let rawQuote = $(this).text().replace(/“|”/g, '')
+                if (driverURL?.includes(sites[w]) && w != 4) {
+                    axios.get(driverURL)
+                        .then(response => {
+                            const html = response.data
+                            const $ = load(html)
+                            if (w === 2) index = -1 //bcs i delete the first element
 
-                            specificQuotes.push({
-                                id: index,
-                                quote: rawQuote,
-                                author: author
-                            })
-
-                        })
-
-                        //VERSION 2
-                        if (specificQuotes.length == 0) { //no blockquote
-
-                            $('#article-content').each(function () {
-                                //bcs it's necessary to scrap all the page, I save the quoted phrases
-                                let rawQuote = $(this).text().replace(/“|”/g, '"')
-                                formattedQuotes = rawQuote.match(/".*/ig)
-
-                            })
-                            for (let i in formattedQuotes) {
+                            //getting the quote div
+                            $(markupElements[w]).each(function () {
                                 index++
-                                let q: any = []
-                                //the quotes have some symbols at the beginning and at the end
-                                q[i] = formattedQuotes[i].slice(1, formattedQuotes[i].length - 1)
+                                let quote = cleanText($(this).text())
+                                //some quotes of db3 finnish with a comma for some reason
+                                if (quote.slice(-1) == ',' && quote.lastIndexOf(',') == quote.length - 1) {
+                                    quote = quote.replace(/,$/, '.')
+                                }
                                 specificQuotes.push({
                                     id: index,
-                                    quote: q[i],
+                                    quote,
                                     author: author
                                 })
+                            })
+                            if (w === 2) specificQuotes.shift()
+                            res.json(pagination(pageN, specificQuotes))
+
+                        }).catch(err => console.log(err))
+
+                } else if (w === 4 && driverURL?.includes(sites[4])) {
+                    axios.get(driverURL)
+                    .then(response => {
+                            const html = response.data
+                            const $ = load(html)
+                            let formattedQuotes: any | RegExpMatchArray | null = []
+
+                            // VERSION 1
+                            $(markupElements[4]).each(function () {
+                                index++
+                                let rawQuote = $(this).text().replace(/“|”/g, '')
+
+                                specificQuotes.push({
+                                    id: index,
+                                    quote: rawQuote,
+                                    author: author
+                                })
+
+                            })
+
+                            //VERSION 2
+                            if (specificQuotes.length == 0) { //no blockquote
+
+                                $('#article-content').each(function () {
+                                    //bcs it's necessary to scrap all the page, I save the quoted phrases
+                                    let rawQuote = $(this).text().replace(/“|”/g, '"')
+                                    formattedQuotes = rawQuote.match(/".*/ig)
+
+                                })
+                                for (let i in formattedQuotes) {
+                                    index++
+                                    let q: any = []
+                                    //the quotes have some symbols at the beginning and at the end
+                                    q[i] = formattedQuotes[i].slice(1, formattedQuotes[i].length - 1)
+                                    specificQuotes.push({
+                                        id: index,
+                                        quote: q[i],
+                                        author: author
+                                    })
+                                }
+
                             }
+                        
+                            res.json(pagination(pageN, specificQuotes))
 
-                        }
-                    
-                        res.json(pagination(pageN, specificQuotes))
-
-                    }).catch(err => console.log(err))
+                        }).catch(err => console.log(err))
+                }
             }
         }
     } else {
@@ -147,10 +161,24 @@ const specificDriver = (req: Request, res: Response<any, Record<string, any>, nu
     }
     specificQuotes = [] //cleaning array
     if (isDriver(driverId)) {
-        const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address
+        const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address || ''
         const authorName = drivers.filter(driver => driver.driverId === driverId)[0].name
 
-        scrapQuotes(driverURL, authorName, req, res, specQuoteID, sites)
+
+        //driver local quotes
+        if (driverURL == '' || driverURL == undefined) {
+            const localDriver = drivers.find(driver => driver.driverId === driverId);//search driverId
+
+            if (localDriver && 'quotes' in localDriver && Array.isArray(localDriver.quotes)) {//author found, has quotes and array
+                const allQuotes = localDriver.quotes
+                res.json(allQuotes)
+
+            }
+
+        //driver scrap quotes    
+        } else {
+            scrapQuotes(driverURL, authorName, req, res, specQuoteID, sites)
+        }
 
     } else {
         res.json('`' + driverId + driverQuotesErrorMsg)

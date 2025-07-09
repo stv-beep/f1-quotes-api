@@ -379,15 +379,57 @@ export const drivers = [
         address: 'https://www.quotes.net/authors/Nikita+Mazepin',
         driverId: 'mazepin'
     },
-    {
+    /* {
         name: 'Oscar Piastri',
         address: 'https://thesportsrush.com/f1-news-oscar-piastri-explains-why-he-will-not-extend-daniel-ricciardos-shoey-legacy/',
         driverId: 'piastri'
-    },
+    }, */
     {
         name: 'Enzo Ferrari',
         address: 'https://www.azquotes.com/author/4758-Enzo_Ferrari',
         driverId: 'ferrari'
+    },
+    {
+        name: 'Oscar Piastri',
+        address: undefined,
+        driverId: 'piastri',
+        quotes: [
+            {
+                id: 1,
+                quote: "The shoey is Danny Ric's thing. I mean, I'm going to get roped into it because I'm an Aussie, but I don't know. I'll try and think of something new. I think that's gone and done. I'll leave that to Danny Ric and that can be his legacy. I'll create my own.",
+                author: "Oscar Piastri"
+            },
+            {
+                id: 2,
+                quote: "I'm not really the kind of person to get overly emotional. I don't think you're ever really going to see that from me.",
+                author: "Oscar Piastri"
+            },
+            {
+                id: 3,
+                quote: "My great great grandfather was Chinese so I think that makes this my 1/16 home race?",
+                author: "Oscar Piastri"
+            },
+            {
+                id: 4,
+                quote: "Definitely was not asleep 15 minutes before these [photographs] were taken.",
+                author: "Oscar Piastri"
+            },
+            {
+                id: 5,
+                quote: "Good time to mention that I'm also 3/16 Italian?",
+                author: "Oscar Piastri"
+            },
+            {
+                id: 6,
+                quote: "Thank you very much to everyone who's voted me Rookie of the Year. It's been a remarkable year, a tough start for the team - but what a turn around we've had. Plenty of highlights, couple of podiums for myself, sprint win in Qatar, so it has been a year to remember.",
+                author: "Oscar Piastri"
+            },
+            {
+                id: 7,
+                quote: "I think my attendance rate for the last year of school was 37%. I still passed, pretty easily, so that was good.",
+                author: "Oscar Piastri"
+            }
+        ]
     }
 ]
 export const sites = ['brainyquote', 'quotes.net', 'azquotes', 'quotetab', 'thesportsrush', 'quoteforever.com']

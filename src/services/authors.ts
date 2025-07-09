@@ -46,6 +46,7 @@ export const authors = [
     { name: "Juan Pablo Montoya", img: "https://cdn-6.motorsport.com/images/mgl/254BGgN0/s1200/juan-pablo-montoya-arrow-mclar-1.webp", id: "montoya" },
     { name: "Lando Norris", img: "https://cdn-9.motorsport.com/images/mgl/Y99Dxg7Y/s1200/pole-man-lando-norris-mclaren-.webp", id: "norris" },
     { name: "Sergio Perez", img: "https://cdn-8.motorsport.com/images/mgl/YXRPr4o0/s8/sergio-perez-red-bull-racing.jpg", id: "perez" },
+    { name: "Oscar Piastri", img: "https://parcfer.me/_next/image?url=https%3A%2F%2Fimages.parcfer.me%2Farticle%2F813bd14e81e5-369025225-335135332202443-2943013031558020991-n.jpg&w=1920&q=75", id: "piastri" },
     { name: "Nelson Piquet", img: "https://www.f1-photo.com/Ressources/Gallery/1989/Brazil/Piquet_1989_Brazil_03_PHC.jpg", id: "piquet" },
     { name: "Alain Prost", img: "https://www.f1-photo.com/Ressources/Gallery/1988/Portugal/Prost_1988_Portugal_03_PHC.jpg", id: "prost" },
     { name: "Kimi Räikkönen", img: "https://raw.githubusercontent.com/sethvm/kimiquotes/main/kimi.gif", id: "raikkonen" },
