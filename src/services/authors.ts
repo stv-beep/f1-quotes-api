@@ -52,6 +52,7 @@ export const authors = [
     { name: "Kimi Räikkönen", img: "https://raw.githubusercontent.com/sethvm/kimiquotes/main/kimi.gif", id: "raikkonen" },
     { name: "Daniel Ricciardo", img: "https://www.f1-photo.com/Ressources/Gallery/2013/Italy/Ricciardo_2013_Italy_06_PHC.jpg", id: "ricciardo" },
     { name: "Nico Rosberg", img: "https://www.f1-photo.com/Ressources/Gallery/2006/Bahrain/Rosberg_2006_Bahrain_01_PHC.jpg", id: "rosberg" },
+    { name: "George Russell", img: "hips.hearstapps.com/hmg-prod/images/third-placed-george-russell-of-great-britain-and-mercedes-news-photo-1728822296.jpg", id: "russell" },    
     { name: "Carlos Sainz Jr", img: "https://www.f1-photo.com/Ressources/Gallery/2015/Spain/Sainz_2015_Spain_08_PHC.jpg", id: "sainz" },
     { name: "Takuma Sato", img: "https://www.f1-photo.com/Ressources/Gallery/2002/Austria/Sato_2002_Austria_01_PHC.jpg", id: "sato" },
     { name: "Jody Scheckter", img: "https://www.f1-photo.com/Ressources/Gallery/1977/Monaco/Scheckter_1977_Monaco_02_BC.jpg", id: "scheckter" },

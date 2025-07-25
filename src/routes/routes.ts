@@ -161,8 +161,17 @@ const specificDriver = (req: Request, res: Response<any, Record<string, any>, nu
     }
     specificQuotes = [] //cleaning array
     if (isDriver(driverId)) {
-        const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address || ''
-        const authorName = drivers.filter(driver => driver.driverId === driverId)[0].name
+        const matchedDriver = drivers.find(driver => driver.driverId === driverId);
+
+        if (!matchedDriver) {
+            return res.status(404).json({ error: `Driver '${driverId}' not found.` });
+        }
+
+        const driverURL = matchedDriver.address || '';
+        const authorName = matchedDriver.name;
+
+        /* const driverURL = drivers.filter(driver => driver.driverId === driverId)[0].address || ''
+        const authorName = drivers.filter(driver => driver.driverId === driverId)[0].name */
 
 
         //driver local quotes
@@ -171,8 +180,16 @@ const specificDriver = (req: Request, res: Response<any, Record<string, any>, nu
 
             if (localDriver && 'quotes' in localDriver && Array.isArray(localDriver.quotes)) {//author found, has quotes and array
                 const allQuotes = localDriver.quotes
-                res.json(allQuotes)
 
+                if (Number(req.params.quoteId) <= 0) {
+                    res.json(idTooSmall)
+                } else if (req.params.quoteId != null || req.params.quoteId != undefined) {
+                    allQuotes[specQuoteID] !== undefined 
+                    ? res.json(allQuotes[specQuoteID]) 
+                    : res.json(`This driver doesn't have that number of quotes in the database. Try between 1-${allQuotes.length}.`)
+                } else {
+                    res.json(allQuotes)
+                }
             }
 
         //driver scrap quotes    

@@ -390,6 +390,33 @@ export const drivers = [
         driverId: 'ferrari'
     },
     {
+        name: 'George Russell',
+        address: undefined,
+        driverId: 'russell',
+        quotes: [
+            {
+                id: 1,
+                quote: "Success is great. But failure is sort of necessary.",
+                author: "George Russell"
+            },
+            {
+                id: 2,
+                quote: "When you join a team like Mercedes you're expecting victories.",
+                author: "George Russell"
+            },
+            {
+                id: 3,
+                quote: "People have been bullied by Max for years now, and you can't question his driving abilities. But he cannot deal with adversity. Whenever anything has gone against him - Jeddah '21, Brazil '21 - he lashes out.",
+                author: "George Russell"
+            },
+            {
+                id: 4,
+                quote: "F1 is ruthless.",
+                author: "George Russell"
+            }
+        ]
+    },
+    {
         name: 'Oscar Piastri',
         address: undefined,
         driverId: 'piastri',

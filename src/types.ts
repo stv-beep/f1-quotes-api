@@ -52,6 +52,7 @@ export enum driverName {
     Kimi_Räikkönen = 'raikkonen',
     Daniel_Ricciardo = 'ricciardo',
     Nico_Rosberg = 'rosberg',
+    George_Russell = 'russell',
     Carlos_Sainz_Jr = 'sainz',
     Takuma_Sato = 'sato',
     Jody_Scheckter = 'scheckter',
